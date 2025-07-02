@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Money Manifestation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+```
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+        min-height: 100vh;
+        color: white;
+        overflow-x: hidden;
+    }
+
+    .container {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        position: relative;
+    }
+
+    .floating-elements {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: hidden;
+    }
+
+    .floating-coin {
+        position: absolute;
+        font-size: 24px;
+        opacity: 0.1;
+        animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(360deg); }
+    }
+
+    .header {
+        text-align: center;
+        margin-bottom: 40px;
+        position: relative;
+    }
+
+    .main-icon {
+        font-size: 80px;
+        margin-bottom: 20px;
+        display: block;
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+
+    .main-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 10px;
+        background: linear-gradient(45deg, #00f5ff, #00d4ff, #0099ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+
+    .subtitle {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        line-height: 1.4;
+        margin-bottom: 30px;
+    }
+
+    .notification-card {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(20px);
+        border-radius: 20px;
+        padding: 30px;
+        margin-bottom: 30px;
+        border: 1px solid rgba(0, 245, 255, 0.2);
+        box-shadow: 0 8px 32px rgba(0, 245, 255, 0.1);
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+
+    .notification-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .notification-icon {
+        font-size: 48px;
+        margin-bottom: 15px;
+        display: block;
+    }
+
+    .notification-text {
+        font-size: 1.1rem;
+        margin-bottom: 20px;
+        line-height: 1.5;
+    }
+
+    .enable-btn {
+        background: linear-gradient(45deg, #00f5ff, #0099ff);
+        border: none;
+        border-radius: 15px;
+        padding: 15px 30px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #0f0f23;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 245, 255, 0.4);
+        width: 100%;
+    }
+
+    .enable-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 245, 255, 0.6);
+    }
+
+    .settings-grid {
+        display: grid;
+        gap: 20px;
+    }
+
+    .setting-item {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(20px);
+        border-radius: 16px;
+        padding: 25px;
+        border: 1px solid rgba(0, 245, 255, 0.15);
+        transition: all 0.3s ease;
+    }
+
+    .setting-item:hover {
+        background: rgba(255, 255, 255, 0.08);
+        transform: translateY(-2px);
+        border-color: rgba(0, 245, 255, 0.3);
+    }
+
+    .setting-label {
+        display: flex;
+        align-items: center;
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 12px;
+        gap: 10px;
+    }
+
+    .setting-icon {
+        font-size: 24px;
+    }
+
+    .input-field {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 12px;
+        padding: 15px;
+        font-size: 1.1rem;
+        color: white;
+        transition: all 0.3s ease;
+    }
+
+    .input-field::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    .input-field:focus {
+        outline: none;
+        border-color: #00f5ff;
+        box-shadow: 0 0 0 3px rgba(0, 245, 255, 0.2);
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .frequency-options {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-top: 12px;
+    }
+
+    .frequency-btn {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        padding: 12px;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+        font-size: 0.9rem;
+    }
+
+    .frequency-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    .frequency-btn.active {
+        background: linear-gradient(45deg, #00f5ff, #0099ff);
+        color: #0f0f23;
+        font-weight: 600;
+    }
+
+    .start-btn {
+        background: linear-gradient(45deg, #7c3aed, #a855f7);
+        border: none;
+        border-radius: 16px;
+        padding: 18px;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+        width: 100%;
+        margin-top: 30px;
+    }
+
+    .start-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(124, 58, 237, 0.6);
+    }
+
+    .notification-demo {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        color: white;
+        padding: 15px 20px;
+        border-radius: 12px;
+        border-left: 4px solid #00f5ff;
+        transform: translateX(400px);
+        transition: transform 0.5s ease;
+        z-index: 1000;
+        max-width: 300px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    .notification-demo.show {
+        transform: translateX(0);
+    }
+
+    .demo-title {
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .demo-amount {
+        font-size: 1.2rem;
+        color: #00f5ff;
+        font-weight: 700;
+    }
+</style>
+```
+
+</head>
+<body>
+    <div class="floating-elements">
+        <div class="floating-coin" style="top: 10%; left: 10%;">💰</div>
+        <div class="floating-coin" style="top: 20%; right: 15%; animation-delay: -2s;">💎</div>
+        <div class="floating-coin" style="top: 60%; left: 5%; animation-delay: -4s;">🪙</div>
+        <div class="floating-coin" style="top: 80%; right: 10%; animation-delay: -1s;">💵</div>
+        <div class="floating-coin" style="top: 40%; right: 5%; animation-delay: -3s;">✨</div>
+    </div>
+
+```
+<div class="container">
+    <div class="header">
+        <span class="main-icon">💰</span>
+        <h1 class="main-title">Money Manifestation</h1>
+        <p class="subtitle">Transform your mindset with powerful abundance affirmations delivered through realistic notifications</p>
+    </div>
+
+    <div class="notification-card">
+        <span class="notification-icon">🔔</span>
+        <p class="notification-text">Enable notifications to receive personalized manifestation alerts that will rewire your subconscious for abundance!</p>
+        <button class="enable-btn" onclick="enableNotifications()">✨ Enable Manifestation Alerts</button>
+    </div>
+
+    <div class="settings-grid">
+        <div class="setting-item">
+            <div class="setting-label">
+                <span class="setting-icon">💵</span>
+                Minimum Amount ($)
+            </div>
+            <input type="number" class="input-field" placeholder="1" value="1" id="minAmount">
+        </div>
+
+        <div class="setting-item">
+            <div class="setting-label">
+                <span class="setting-icon">💎</span>
+                Maximum Amount ($)
+            </div>
+            <input type="number" class="input-field" placeholder="1000" value="1000" id="maxAmount">
+        </div>
+
+        <div class="setting-item">
+            <div class="setting-label">
+                <span class="setting-icon">⏰</span>
+                Manifestation Frequency
+            </div>
+            <div class="frequency-options">
+                <button class="frequency-btn" onclick="selectFrequency(this, 'hourly')">Every Hour</button>
+                <button class="frequency-btn active" onclick="selectFrequency(this, 'daily')">Daily</button>
+                <button class="frequency-btn" onclick="selectFrequency(this, 'weekly')">Weekly</button>
+                <button class="frequency-btn" onclick="selectFrequency(this, 'custom')">Custom</button>
+            </div>
+        </div>
+    </div>
+
+    <button class="start-btn" onclick="startManifestation()">🚀 Begin Your Abundance Journey</button>
+</div>
+
+<div class="notification-demo" id="notificationDemo">
+    <div class="demo-title">💰 Money Manifestation</div>
+    <div class="demo-amount">You've received $<span id="demoAmount">247</span>!</div>
+</div>
+
+<script>
+    let selectedFrequency = 'daily';
+    let manifestationActive = false;
+
+    function enableNotifications() {
+        // Simulate notification permission
+        const btn = document.querySelector('.enable-btn');
+        btn.innerHTML = '✅ Notifications Enabled!';
+        btn.style.background = 'linear-gradient(45deg, #22c55e, #16a34a)';
+        btn.style.color = 'white';
+        
+        // Show demo notification
+        setTimeout(() => {
+            showDemoNotification();
+        }, 1000);
+    }
+
+    function selectFrequency(button, frequency) {
+        document.querySelectorAll('.frequency-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        button.classList.add('active');
+        selectedFrequency = frequency;
+    }
+
+    function startManifestation() {
+        const btn = document.querySelector('.start-btn');
+        const minAmount = document.getElementById('minAmount').value || 1;
+        const maxAmount = document.getElementById('maxAmount').value || 1000;
+
+        if (!manifestationActive) {
+            manifestationActive = true;
+            btn.innerHTML = '⏸️ Pause Manifestation';
+            btn.style.background = 'linear-gradient(45deg, #ef4444, #dc2626)';
+            
+            // Start demo notifications
+            startDemoNotifications(minAmount, maxAmount);
+        } else {
+            manifestationActive = false;
+            btn.innerHTML = '🚀 Begin Your Abundance Journey';
+            btn.style.background = 'linear-gradient(45deg, #7c3aed, #a855f7)';
+            
+            clearInterval(window.manifestationInterval);
+        }
+    }
+
+    function showDemoNotification() {
+        const demo = document.getElementById('notificationDemo');
+        const minAmount = document.getElementById('minAmount').value || 1;
+        const maxAmount = document.getElementById('maxAmount').value || 1000;
+        const randomAmount = Math.floor(Math.random() * (maxAmount - minAmount + 1)) + parseInt(minAmount);
+        
+        document.getElementById('demoAmount').textContent = randomAmount;
+        demo.classList.add('show');
+        
+        setTimeout(() => {
+            demo.classList.remove('show');
+        }, 4000);
+    }
+
+    function startDemoNotifications(min, max) {
+        const getInterval = () => {
+            switch(selectedFrequency) {
+                case 'hourly': return 5000; // Demo: 5 seconds
+                case 'daily': return 10000; // Demo: 10 seconds
+                case 'weekly': return 20000; // Demo: 20 seconds
+                default: return 8000; // Demo: 8 seconds
+            }
+        };
+
+        window.manifestationInterval = setInterval(() => {
+            if (manifestationActive) {
+                showDemoNotification();
+            }
+        }, getInterval());
+    }
+
+    // Add some interactive sparkle effects
+    document.addEventListener('mousemove', (e) => {
+        if (Math.random() > 0.95) {
+            createSparkle(e.clientX, e.clientY);
+        }
+    });
+
+    function createSparkle(x, y) {
+        const sparkle = document.createElement('div');
+        sparkle.innerHTML = '✨';
+        sparkle.style.position = 'fixed';
+        sparkle.style.left = x + 'px';
+        sparkle.style.top = y + 'px';
+        sparkle.style.pointerEvents = 'none';
+        sparkle.style.fontSize = '12px';
+        sparkle.style.zIndex = '9999';
+        sparkle.style.animation = 'sparkleAnimation 1s ease-out forwards';
+        
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes sparkleAnimation {
+                0% { opacity: 1; transform: scale(0) rotate(0deg); }
+                50% { opacity: 1; transform: scale(1) rotate(180deg); }
+                100% { opacity: 0; transform: scale(0) rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        document.body.appendChild(sparkle);
+        
+        setTimeout(() => {
+            document.body.removeChild(sparkle);
+            document.head.removeChild(style);
+        }, 1000);
+    }
+</script>
+```
+
+</body>
+</html>
