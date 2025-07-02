@@ -1680,10 +1680,15 @@
         let elements;
         let paymentElement;
 
+        // Helper function to get API base URL
+        function getApiBase() {
+            return window.location.hostname === 'localhost' ? 'http://localhost:3001' : '';
+        }
+
         async function initializeStripe() {
             try {
                 // Get public key from backend
-                const response = await fetch('http://localhost:3001/api/stripe-config');
+                const response = await fetch(`${getApiBase()}/api/stripe-config`);
                 const { publicKey } = await response.json();
                 stripe = Stripe(publicKey);
                 console.log('Stripe initialized successfully');
@@ -1698,9 +1703,9 @@
                 showToast('Preparing secure checkout...');
                 
                 // Create subscription based on plan
-                const priceId = plan === 'monthly' ? 'price_monthly_444' : 'price_yearly_2999';
+                const priceId = plan === 'monthly' ? 'price_1RgSWTGs12PfvR6u7ZYAbgDD' : 'price_1RgSWTGs12PfvR6uvBtf0z3D';
                 
-                const response = await fetch('http://localhost:3001/api/create-subscription', {
+                const response = await fetch(`${getApiBase()}/api/create-subscription`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -2525,7 +2530,7 @@
         // Social Proof Functions
         async function trackUserSession() {
             try {
-                await fetch('http://localhost:3001/api/track-session', {
+                await fetch(`${getApiBase()}/api/track-session`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' }
                 });
@@ -2549,7 +2554,7 @@
         
         async function updateActiveUsers() {
             try {
-                const response = await fetch('http://localhost:3001/api/active-users');
+                const response = await fetch(`${getApiBase()}/api/active-users`);
                 const data = await response.json();
                 
                 document.getElementById('activeUsers').innerHTML = 
@@ -2562,7 +2567,7 @@
         
         async function updateSuccessStory() {
             try {
-                const response = await fetch('http://localhost:3001/api/success-story');
+                const response = await fetch(`${getApiBase()}/api/success-story`);
                 const data = await response.json();
                 
                 document.getElementById('successStory').innerHTML = 
@@ -2603,7 +2608,7 @@
             }
             
             try {
-                await fetch('http://localhost:3001/api/manifestation-win', {
+                await fetch(`${getApiBase()}/api/manifestation-win`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
