@@ -1,276 +1,610 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Money Manifestation</title>
+    <title>DigiManifest - Money Manifestation</title>
     <style>
+        :root {
+            --bg-gradient-dark: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            --bg-gradient-light: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
+            --text-primary-dark: white;
+            --text-primary-light: #1e293b;
+            --card-bg-dark: rgba(255, 255, 255, 0.05);
+            --card-bg-light: rgba(255, 255, 255, 0.8);
+            --border-dark: rgba(0, 245, 255, 0.2);
+            --border-light: rgba(59, 130, 246, 0.3);
+            --overlay-dark: rgba(255, 255, 255, 0.1);
+            --overlay-light: rgba(0, 0, 0, 0.1);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-```
-    body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
-        min-height: 100vh;
-        color: white;
-        overflow-x: hidden;
-    }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-gradient-dark);
+            min-height: 100vh;
+            color: var(--text-primary-dark);
+            overflow-x: hidden;
+            transition: all 0.3s ease;
+        }
 
-    .container {
-        max-width: 400px;
-        margin: 0 auto;
-        padding: 20px;
-        position: relative;
-    }
+        body.light-theme {
+            background: var(--bg-gradient-light);
+            color: var(--text-primary-light);
+        }
 
-    .floating-elements {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        overflow: hidden;
-    }
+        /* Light theme styles for various components */
+        body.light-theme .usage-display,
+        body.light-theme .stat-card,
+        body.light-theme .section-card {
+            background: var(--card-bg-light);
+            border: 1px solid var(--border-light);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
 
-    .floating-coin {
-        position: absolute;
-        font-size: 24px;
-        opacity: 0.1;
-        animation: float 6s ease-in-out infinite;
-    }
+        body.light-theme .frequency-btn,
+        body.light-theme .action-button {
+            background: var(--overlay-light);
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            color: var(--text-primary-light);
+        }
 
-    @keyframes float {
-        0%, 100% { transform: translateY(0px) rotate(0deg); }
-        50% { transform: translateY(-20px) rotate(360deg); }
-    }
+        body.light-theme .frequency-btn.active {
+            background: linear-gradient(45deg, #3b82f6, #1d4ed8);
+            color: white;
+        }
 
-    .header {
-        text-align: center;
-        margin-bottom: 40px;
-        position: relative;
-    }
+        body.light-theme .input-field::placeholder {
+            color: rgba(0, 0, 0, 0.5);
+        }
 
-    .main-icon {
-        font-size: 80px;
-        margin-bottom: 20px;
-        display: block;
-        animation: pulse 2s infinite;
-    }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+        }
 
-    @keyframes pulse {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.05); }
-        100% { transform: scale(1); }
-    }
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
 
-    .main-title {
-        font-size: 2.5rem;
-        font-weight: 800;
-        margin-bottom: 10px;
-        background: linear-gradient(45deg, #00f5ff, #00d4ff, #0099ff);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-        text-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    }
+        .floating-coin {
+            position: absolute;
+            font-size: 24px;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
 
-    .subtitle {
-        font-size: 1.1rem;
-        opacity: 0.9;
-        line-height: 1.4;
-        margin-bottom: 30px;
-    }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(360deg); }
+        }
 
-    .notification-card {
-        background: rgba(255, 255, 255, 0.08);
-        backdrop-filter: blur(20px);
-        border-radius: 20px;
-        padding: 30px;
-        margin-bottom: 30px;
-        border: 1px solid rgba(0, 245, 255, 0.2);
-        box-shadow: 0 8px 32px rgba(0, 245, 255, 0.1);
-        text-align: center;
-        transition: transform 0.3s ease;
-    }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
 
-    .notification-card:hover {
-        transform: translateY(-5px);
-    }
+        .main-icon {
+            font-size: 70px;
+            margin-bottom: 20px;
+            display: block;
+            animation: pulse 2s infinite;
+        }
 
-    .notification-icon {
-        font-size: 48px;
-        margin-bottom: 15px;
-        display: block;
-    }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
 
-    .notification-text {
-        font-size: 1.1rem;
-        margin-bottom: 20px;
-        line-height: 1.5;
-    }
+        .main-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #00f5ff, #00d4ff, #0099ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
 
-    .enable-btn {
-        background: linear-gradient(45deg, #00f5ff, #0099ff);
-        border: none;
-        border-radius: 15px;
-        padding: 15px 30px;
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: #0f0f23;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 15px rgba(0, 245, 255, 0.4);
-        width: 100%;
-    }
+        .subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+            line-height: 1.4;
+            margin-bottom: 20px;
+        }
 
-    .enable-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(0, 245, 255, 0.6);
-    }
+        .plan-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #00f5ff, #0099ff);
+            color: #0f0f23;
+        }
 
-    .settings-grid {
-        display: grid;
-        gap: 20px;
-    }
+        .usage-display {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(0, 245, 255, 0.15);
+            text-align: center;
+        }
 
-    .setting-item {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(20px);
-        border-radius: 16px;
-        padding: 25px;
-        border: 1px solid rgba(0, 245, 255, 0.15);
-        transition: all 0.3s ease;
-    }
+        .usage-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #00f5ff;
+        }
 
-    .setting-item:hover {
-        background: rgba(255, 255, 255, 0.08);
-        transform: translateY(-2px);
-        border-color: rgba(0, 245, 255, 0.3);
-    }
+        .usage-bar {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
 
-    .setting-label {
-        display: flex;
-        align-items: center;
-        font-size: 1.1rem;
-        font-weight: 600;
-        margin-bottom: 12px;
-        gap: 10px;
-    }
+        .usage-fill {
+            background: linear-gradient(45deg, #00f5ff, #0099ff);
+            height: 100%;
+            transition: width 0.3s ease;
+        }
 
-    .setting-icon {
-        font-size: 24px;
-    }
+        .usage-text {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
 
-    .input-field {
-        width: 100%;
-        background: rgba(255, 255, 255, 0.2);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: 12px;
-        padding: 15px;
-        font-size: 1.1rem;
-        color: white;
-        transition: all 0.3s ease;
-    }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
 
-    .input-field::placeholder {
-        color: rgba(255, 255, 255, 0.6);
-    }
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid rgba(0, 245, 255, 0.15);
+        }
 
-    .input-field:focus {
-        outline: none;
-        border-color: #00f5ff;
-        box-shadow: 0 0 0 3px rgba(0, 245, 255, 0.2);
-        background: rgba(255, 255, 255, 0.1);
-    }
+        .stat-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #00f5ff;
+        }
 
-    .frequency-options {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-        margin-top: 12px;
-    }
+        .stat-label {
+            font-size: 0.7rem;
+            opacity: 0.8;
+            margin-top: 4px;
+        }
 
-    .frequency-btn {
-        background: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 10px;
-        padding: 12px;
-        color: white;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        text-align: center;
-        font-size: 0.9rem;
-    }
+        .settings-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(0, 245, 255, 0.15);
+        }
 
-    .frequency-btn:hover {
-        background: rgba(255, 255, 255, 0.2);
-    }
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #00f5ff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-    .frequency-btn.active {
-        background: linear-gradient(45deg, #00f5ff, #0099ff);
-        color: #0f0f23;
-        font-weight: 600;
-    }
+        .setting-item {
+            margin-bottom: 15px;
+        }
 
-    .start-btn {
-        background: linear-gradient(45deg, #7c3aed, #a855f7);
-        border: none;
-        border-radius: 16px;
-        padding: 18px;
-        font-size: 1.2rem;
-        font-weight: 700;
-        color: white;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
-        width: 100%;
-        margin-top: 30px;
-    }
+        .setting-label {
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+            gap: 8px;
+        }
 
-    .start-btn:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(124, 58, 237, 0.6);
-    }
+        .setting-icon {
+            font-size: 16px;
+        }
 
-    .notification-demo {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-        color: white;
-        padding: 15px 20px;
-        border-radius: 12px;
-        border-left: 4px solid #00f5ff;
-        transform: translateX(400px);
-        transition: transform 0.5s ease;
-        z-index: 1000;
-        max-width: 300px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-    }
+        .input-field {
+            width: 100%;
+            background: var(--overlay-dark);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 0.9rem;
+            color: var(--text-primary-dark);
+            transition: all 0.3s ease;
+        }
 
-    .notification-demo.show {
-        transform: translateX(0);
-    }
+        body.light-theme .input-field {
+            background: var(--overlay-light);
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            color: var(--text-primary-light);
+        }
 
-    .demo-title {
-        font-weight: 600;
-        margin-bottom: 5px;
-    }
+        .input-field::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
 
-    .demo-amount {
-        font-size: 1.2rem;
-        color: #00f5ff;
-        font-weight: 700;
-    }
-</style>
-```
+        .input-field:focus {
+            outline: none;
+            border-color: #00f5ff;
+            box-shadow: 0 0 0 2px rgba(0, 245, 255, 0.2);
+            background: rgba(255, 255, 255, 0.15);
+        }
 
+        .frequency-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .frequency-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 8px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+
+        .frequency-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .frequency-btn.active {
+            background: linear-gradient(45deg, #00f5ff, #0099ff);
+            color: #0f0f23;
+            font-weight: 600;
+        }
+
+        .grabovoi-section {
+            background: rgba(168, 85, 247, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+
+        .grabovoi-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 13px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: linear-gradient(45deg, #a855f7, #8b5cf6);
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-switch.active .toggle-slider {
+            transform: translateX(24px);
+        }
+
+        .grabovoi-codes {
+            display: none;
+            grid-template-columns: 1fr;
+            gap: 8px;
+            max-height: 120px;
+            overflow-y: auto;
+        }
+
+        .grabovoi-codes.show {
+            display: grid;
+        }
+
+        .code-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .code-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.9);
+            flex: 1;
+        }
+
+        .code-number {
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            color: #a855f7;
+            font-weight: 600;
+            background: rgba(168, 85, 247, 0.2);
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .code-number:hover {
+            background: rgba(168, 85, 247, 0.3);
+            transform: scale(1.05);
+        }
+
+        .sound-settings {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .volume-slider {
+            flex: 1;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #00f5ff;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .toggle-btn, .test-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 8px 12px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+        }
+
+        .toggle-btn:hover, .test-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .toggle-btn.active {
+            background: linear-gradient(45deg, #00f5ff, #0099ff);
+            color: #0f0f23;
+            font-weight: 600;
+        }
+
+        .main-button {
+            background: linear-gradient(45deg, #00f5ff, #0099ff);
+            border: none;
+            border-radius: 12px;
+            padding: 15px;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #0f0f23;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 245, 255, 0.4);
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .main-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 245, 255, 0.6);
+        }
+
+        .manual-trigger-btn {
+            background: linear-gradient(45deg, #3b82f6, #2563eb);
+            border: none;
+            border-radius: 12px;
+            padding: 15px;
+            font-size: 1rem;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .manual-trigger-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+        }
+
+        .upgrade-btn {
+            background: linear-gradient(45deg, #a855f7, #8b5cf6);
+            border: none;
+            border-radius: 12px;
+            padding: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .upgrade-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
+        }
+
+        .notification-demo {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            border-left: 4px solid #00f5ff;
+            transform: translateX(400px);
+            transition: transform 0.5s ease;
+            z-index: 1000;
+            max-width: 320px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .notification-demo.show {
+            transform: translateX(0);
+        }
+
+        .demo-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .demo-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .demo-amount {
+            font-size: 1.2rem;
+            color: #00f5ff;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .demo-sender {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            margin-bottom: 4px;
+        }
+
+        .demo-code {
+            font-family: 'Courier New', monospace;
+            font-size: 0.75rem;
+            color: #a855f7;
+            opacity: 0.9;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(45deg, #00f5ff, #0099ff);
+            color: #0f0f23;
+            padding: 10px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            z-index: 10000;
+            font-size: 0.85rem;
+            box-shadow: 0 4px 15px rgba(0, 245, 255, 0.4);
+        }
+
+        .subliminal-flash {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(168, 85, 247, 0.95);
+            color: white;
+            font-family: 'Courier New', monospace;
+            font-size: 48px;
+            font-weight: bold;
+            padding: 20px 40px;
+            border-radius: 12px;
+            z-index: 15000;
+            pointer-events: none;
+            opacity: 0;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.6);
+        }
+
+        .subliminal-flash.show {
+            opacity: 1;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .notification-demo {
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
+            
+            .subliminal-flash {
+                font-size: 32px;
+                padding: 15px 30px;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="floating-elements">
@@ -281,154 +615,1052 @@
         <div class="floating-coin" style="top: 40%; right: 5%; animation-delay: -3s;">✨</div>
     </div>
 
-```
-<div class="container">
-    <div class="header">
-        <span class="main-icon">💰</span>
-        <h1 class="main-title">Money Manifestation</h1>
-        <p class="subtitle">Transform your mindset with powerful abundance affirmations delivered through realistic notifications</p>
-    </div>
-
-    <div class="notification-card">
-        <span class="notification-icon">🔔</span>
-        <p class="notification-text">Enable notifications to receive personalized manifestation alerts that will rewire your subconscious for abundance!</p>
-        <button class="enable-btn" onclick="enableNotifications()">✨ Enable Manifestation Alerts</button>
-    </div>
-
-    <div class="settings-grid">
-        <div class="setting-item">
-            <div class="setting-label">
-                <span class="setting-icon">💵</span>
-                Minimum Amount ($)
+    <div class="container">
+        <div class="header">
+            <div style="position: absolute; top: 15px; right: 15px;">
+                <button id="themeToggle" onclick="toggleTheme()" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 6px 10px; border-radius: 8px; color: white; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                    <span id="themeIcon">🌙</span>
+                    <span id="themeText">Dark</span>
+                </button>
             </div>
-            <input type="number" class="input-field" placeholder="1" value="1" id="minAmount">
+            <span class="main-icon">💰</span>
+            <h1 class="main-title">DigiManifest</h1>
+            <p class="subtitle">Advanced money manifestation with intelligent notifications</p>
+            <div class="plan-badge" id="planBadge">PRO UNLIMITED</div>
         </div>
 
-        <div class="setting-item">
-            <div class="setting-label">
-                <span class="setting-icon">💎</span>
-                Maximum Amount ($)
+        <div class="usage-display" id="usageDisplay" style="display: none;">
+            <div class="usage-title">Daily Manifestations</div>
+            <div class="usage-bar">
+                <div class="usage-fill" id="usageFill" style="width: 0%"></div>
             </div>
-            <input type="number" class="input-field" placeholder="1000" value="1000" id="maxAmount">
+            <div class="usage-text" id="usageText">0 / 10 used today</div>
         </div>
 
-        <div class="setting-item">
-            <div class="setting-label">
-                <span class="setting-icon">⏰</span>
-                Manifestation Frequency
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="totalManifested">$0</div>
+                <div class="stat-label">Total Manifested</div>
             </div>
-            <div class="frequency-options">
-                <button class="frequency-btn" onclick="selectFrequency(this, 'hourly')">Every Hour</button>
-                <button class="frequency-btn active" onclick="selectFrequency(this, 'daily')">Daily</button>
-                <button class="frequency-btn" onclick="selectFrequency(this, 'weekly')">Weekly</button>
-                <button class="frequency-btn" onclick="selectFrequency(this, 'custom')">Custom</button>
+            <div class="stat-card">
+                <div class="stat-value" id="sessionsCount">0</div>
+                <div class="stat-label">Sessions</div>
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <div class="section-title">
+                <span>💰</span>
+                Amount Settings
+            </div>
+            <div class="setting-item">
+                <div class="setting-label">
+                    <span class="setting-icon">💵</span>
+                    Minimum Amount ($)
+                </div>
+                <input type="number" class="input-field" placeholder="10" value="10" id="minAmount" min="1" step="0.01">
+            </div>
+            <div class="setting-item">
+                <div class="setting-label">
+                    <span class="setting-icon">💎</span>
+                    Maximum Amount ($)
+                </div>
+                <input type="number" class="input-field" placeholder="1000" value="1000" id="maxAmount" min="1" step="0.01">
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <div class="section-title">
+                <span>⏰</span>
+                Frequency Settings
+            </div>
+            <div class="frequency-grid">
+                <button class="frequency-btn active" onclick="selectFrequency(this, 'random')">🎲 Random Timing</button>
+                <button class="frequency-btn" onclick="selectFrequency(this, 300)">5 Minutes</button>
+                <button class="frequency-btn" onclick="selectFrequency(this, 600)">10 Minutes</button>
+                <button class="frequency-btn" onclick="selectFrequency(this, 900)">15 Minutes</button>
+                <button class="frequency-btn" onclick="selectFrequency(this, 1800)">30 Minutes</button>
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <div class="section-title">
+                <span>📱</span>
+                Sender Settings
+            </div>
+            <div class="setting-item">
+                <div class="setting-label">
+                    <span class="setting-icon">👤</span>
+                    Sender Name
+                </div>
+                <select id="senderSelect" class="input-field" style="cursor: pointer; margin-bottom: 8px;" onchange="toggleSenderInput()">
+                    <option value="random" selected>🎲 Random Sender</option>
+                    <option value="custom">✏️ Custom Name</option>
+                </select>
+                <input type="text" class="input-field" placeholder="Universe" value="Universe" id="senderName" style="display: none;">
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <div class="section-title">
+                <span>🏦</span>
+                Bank Selection
+            </div>
+            <div class="setting-item">
+                <div class="setting-label">
+                    <span class="setting-icon">💳</span>
+                    Source Account
+                </div>
+                <select id="bankSelect" class="input-field" style="cursor: pointer;">
+                    <option value="random" selected>🎲 Random Selection</option>
+                    <option value="Chase Bank">💳 Chase Bank</option>
+                    <option value="Bank of America">💳 Bank of America</option>
+                    <option value="Wells Fargo">💳 Wells Fargo</option>
+                    <option value="Citibank">💳 Citibank</option>
+                    <option value="Capital One">💳 Capital One</option>
+                    <option value="US Bank">💳 US Bank</option>
+                    <option value="PNC Bank">💳 PNC Bank</option>
+                    <option value="TD Bank">💳 TD Bank</option>
+                    <option value="Truist Bank">💳 Truist Bank</option>
+                    <option value="Charles Schwab">💳 Charles Schwab</option>
+                    <option value="Goldman Sachs">💳 Goldman Sachs</option>
+                    <option value="American Express">💳 American Express</option>
+                    <option value="Discover Bank">💳 Discover Bank</option>
+                    <option value="Ally Bank">💳 Ally Bank</option>
+                    <option value="Marcus by Goldman Sachs">💳 Marcus by Goldman Sachs</option>
+                    <option value="PayPal">📱 PayPal</option>
+                    <option value="Venmo">📱 Venmo</option>
+                    <option value="Cash App">📱 Cash App</option>
+                    <option value="Zelle">📱 Zelle</option>
+                    <option value="Apple Pay">📱 Apple Pay</option>
+                    <option value="Google Pay">📱 Google Pay</option>
+                    <option value="Coinbase">₿ Coinbase</option>
+                    <option value="Robinhood">📈 Robinhood</option>
+                    <option value="E*TRADE">📈 E*TRADE</option>
+                    <option value="Fidelity">📈 Fidelity</option>
+                    <option value="Vanguard">📈 Vanguard</option>
+                    <option value="Universe">✨ Universe</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <div class="section-title">
+                <span>📊</span>
+                Manifestation Type
+            </div>
+            <div class="frequency-grid">
+                <button class="frequency-btn active" onclick="selectManifestationType(this, 'random')" id="typeRandom">🎲 Random Type</button>
+                <button class="frequency-btn" onclick="selectManifestationType(this, 'instant')" id="typeInstant">⚡ Instant Transfer</button>
+                <button class="frequency-btn" onclick="selectManifestationType(this, 'investment')" id="typeInvestment">📈 Investment Return</button>
+                <button class="frequency-btn" onclick="selectManifestationType(this, 'cashback')" id="typeCashback">💰 Cashback Reward</button>
+                <button class="frequency-btn" onclick="selectManifestationType(this, 'bonus')" id="typeBonus">🎁 Bonus Payment</button>
+            </div>
+        </div>
+
+        <div class="grabovoi-section">
+            <div class="section-title">
+                <span>🔢</span>
+                Grabovoi Codes
+                <div class="grabovoi-toggle">
+                    <div class="toggle-switch" id="grabovaiToggle" onclick="toggleGrabovai()">
+                        <div class="toggle-slider"></div>
+                    </div>
+                    <span style="font-size: 0.8rem;">Daily code notifications</span>
+                </div>
+            </div>
+            <div class="grabovoi-codes" id="grabovaiCodes">
+                <div class="code-item">
+                    <span class="code-label">Unexpected Money</span>
+                    <span class="code-number" onclick="copyCode('5207418')">5207418</span>
+                </div>
+                <div class="code-item">
+                    <span class="code-label">Immediate Money</span>
+                    <span class="code-number" onclick="copyCode('426499')">426499</span>
+                </div>
+                <div class="code-item">
+                    <span class="code-label">Constant Flow</span>
+                    <span class="code-number" onclick="copyCode('318612518714')">318612518714</span>
+                </div>
+                <div class="code-item">
+                    <span class="code-label">Money Magnet</span>
+                    <span class="code-number" onclick="copyCode('199621147')">199621147</span>
+                </div>
+                <div class="code-item">
+                    <span class="code-label">Financial Independence</span>
+                    <span class="code-number" onclick="copyCode('51849617')">51849617</span>
+                </div>
+                <div class="code-item">
+                    <span class="code-label">Business Success</span>
+                    <span class="code-number" onclick="copyCode('9707411')">9707411</span>
+                </div>
+            </div>
+            <div style="margin-top: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                <button class="toggle-btn" id="subliminalToggle" onclick="toggleSubliminal()">Subliminal Flash OFF</button>
+                <button class="toggle-btn" id="spacedRepetitionToggle" onclick="toggleSpacedRepetition()">Spaced Learning OFF</button>
+            </div>
+            <div style="margin-top: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                <button class="toggle-btn" id="circadianToggle" onclick="toggleCircadian()">Circadian OFF</button>
+                <button class="toggle-btn" id="cycleToggle" onclick="toggle21DayCycle()">21-Day Cycle OFF</button>
+            </div>
+            <button class="test-btn" onclick="showTodaysGrabovaiCode()" style="width: 100%; margin-top: 10px; background: linear-gradient(45deg, #a855f7, #9333ea);">📖 Show Today's Code</button>
+            
+            <!-- Achievement Display -->
+            <div id="achievementDisplay" style="margin-top: 15px; padding: 12px; background: rgba(255,255,255,0.05); border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                    <span style="font-size: 16px; font-weight: bold;">🏆 0 Day Streak</span>
+                </div>
+                <div style="font-size: 12px; opacity: 0.7;">
+                    Total Code Views: 0 | 0/5 Achievements
+                </div>
+            </div>
+            
+            <!-- Custom Affirmations Section -->
+            <div style="margin-top: 15px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+                    <span style="font-size: 14px; font-weight: bold;">💫 Custom Affirmations</span>
+                    <button class="toggle-btn" onclick="showAddAffirmationModal()" style="font-size: 12px; padding: 6px 10px;">+ Add</button>
+                </div>
+                <div id="customAffirmationsList" style="max-height: 100px; overflow-y: auto;">
+                    <div style="font-size: 12px; opacity: 0.7; text-align: center; padding: 10px;">
+                        Add personal wealth affirmations paired with Grabovoi codes
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Social Proof Section -->
+        <div class="settings-section" style="background: rgba(0, 245, 255, 0.05); border: 1px solid rgba(0, 245, 255, 0.2);">
+            <div class="section-title">
+                <span>🌍</span>
+                Community Proof
+            </div>
+            <div id="socialProofContainer">
+                <div id="activeUsers" style="font-size: 14px; margin-bottom: 8px; color: #00f5ff;">
+                    🟢 Loading active manifesters...
+                </div>
+                <div id="successStory" style="font-size: 13px; opacity: 0.9; background: rgba(255,255,255,0.05); padding: 8px; border-radius: 6px; margin-bottom: 8px;">
+                    Loading success story...
+                </div>
+                <button class="toggle-btn" onclick="showShareWinModal()" style="width: 100%; font-size: 12px;">📢 Share Your Win</button>
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <div class="section-title">
+                <span>🔊</span>
+                Sound Settings
+            </div>
+            <div class="sound-settings">
+                <div class="volume-control">
+                    <span style="font-size: 0.8rem;">Volume</span>
+                    <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="50">
+                </div>
+                <button class="test-btn" onclick="testSound()">Test</button>
+            </div>
+            <div style="margin-top: 10px;">
+                <button class="toggle-btn active" id="soundToggle" onclick="toggleSound()">Sound ON</button>
+            </div>
+        </div>
+
+        <button class="main-button" onclick="toggleManifestation()" id="mainButton">🚀 Start DigiManifest</button>
+        <button class="manual-trigger-btn" onclick="triggerManualNotification()" id="manualTriggerBtn">⚡ Manifest Now</button>
+        <button class="upgrade-btn" onclick="showUpgradeModal()" id="upgradeBtn" style="display: none;">⭐ Upgrade to Pro</button>
+    </div>
+
+    <div class="notification-demo" id="notificationDemo">
+        <div class="demo-header">
+            <span>💰</span>
+            <div class="demo-title">DigiManifest</div>
+        </div>
+        <div class="demo-amount">$<span id="demoAmount">247</span></div>
+        <div class="demo-sender">From: <span id="demoSender">Universe</span></div>
+        <div class="demo-code" id="demoCodeDisplay" style="display: none;">Grabovoi: <span id="demoCode">5207418</span></div>
+    </div>
+
+    <!-- Subliminal Flash Overlay -->
+    <div class="subliminal-flash" id="subliminalFlash"></div>
+
+    <!-- Upgrade Modal -->
+    <div id="upgradeModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10000; align-items: center; justify-content: center;">
+        <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 30px; border-radius: 20px; max-width: 400px; width: 90%; color: white; text-align: center; border: 1px solid rgba(0, 245, 255, 0.3);">
+            <h2 style="color: #00f5ff; margin-bottom: 20px; font-size: 1.5rem;">Upgrade to DigiManifest Pro</h2>
+            
+            <div style="text-align: left; margin-bottom: 25px;">
+                <div style="margin-bottom: 15px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 10px;">
+                    <h3 style="color: #a855f7; margin-bottom: 10px; font-size: 1.1rem;">Pro Features:</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 8px;">✨ Unlimited daily manifestations</li>
+                        <li style="margin-bottom: 8px;">🔢 Sacred Grabovoi codes included</li>
+                        <li style="margin-bottom: 8px;">⚡ Subliminal flash codes (17-33ms flashes)</li>
+                        <li style="margin-bottom: 8px;">🧠 Spaced repetition learning system</li>
+                        <li style="margin-bottom: 8px;">🌙 Circadian rhythm optimization</li>
+                        <li style="margin-bottom: 8px;">📅 21-day focus cycles for neural pathways</li>
+                        <li style="margin-bottom: 8px;">🎲 Random selection features (banks, types, timing)</li>
+                        <li style="margin-bottom: 8px;">⚡ Faster notification frequencies (5-10 min)</li>
+                        <li style="margin-bottom: 8px;">💰 Unlimited amount ranges (no $100 limit)</li>
+                        <li style="margin-bottom: 8px;">🏦 All bank sources & payment apps</li>
+                        <li style="margin-bottom: 8px;">📊 Multiple manifestation types</li>
+                        <li style="margin-bottom: 8px;">👤 Custom sender names</li>
+                        <li style="margin-bottom: 8px;">📈 Advanced statistics & tracking</li>
+                    </ul>
+                </div>
+                
+                <div style="background: rgba(168, 85, 247, 0.1); padding: 15px; border-radius: 10px; border: 1px solid rgba(168, 85, 247, 0.3);">
+                    <div style="font-size: 1.2rem; font-weight: 700; color: #a855f7;">Just $4.99/month</div>
+                    <div style="font-size: 0.9rem; opacity: 0.8;">or $29.99/year (save 50%)</div>
+                </div>
+            </div>
+            
+            <div style="display: grid; gap: 10px; margin-bottom: 15px;">
+                <button onclick="simulateUpgrade()" style="background: linear-gradient(45deg, #a855f7, #8b5cf6); border: none; border-radius: 12px; padding: 15px; color: white; font-weight: 600; cursor: pointer; font-size: 1rem;">
+                    🚀 Upgrade Now (Demo)
+                </button>
+                <button onclick="closeUpgradeModal()" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; padding: 12px; color: white; cursor: pointer;">
+                    Maybe Later
+                </button>
+            </div>
+            
+            <p style="font-size: 0.8rem; opacity: 0.7;">*This is a demo. Real payment integration would be here.</p>
+        </div>
+    </div>
+
+    <!-- Add Affirmation Modal -->
+    <div id="addAffirmationModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10000; justify-content: center; align-items: center;">
+        <div style="background: linear-gradient(135deg, #1a1a2e, #16213e); padding: 30px; border-radius: 20px; max-width: 400px; width: 90%; box-shadow: 0 20px 40px rgba(0,0,0,0.5);">
+            <h3 style="color: #a855f7; margin-bottom: 20px; text-align: center;">💫 Add Custom Affirmation</h3>
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 8px; font-size: 14px;">Your Wealth Affirmation:</label>
+                <textarea id="newAffirmationText" placeholder="I am a money magnet, attracting abundance effortlessly..." style="width: 100%; height: 80px; padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); color: white; resize: vertical;"></textarea>
+            </div>
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; font-size: 14px;">Paired Grabovoi Code:</label>
+                <select id="newAffirmationCode" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); color: white;">
+                    <option value="">Choose a code...</option>
+                    <option value="5207418">5207418 - Unexpected Money</option>
+                    <option value="426499">426499 - Immediate Money</option>
+                    <option value="318612518714">318612518714 - Constant Flow</option>
+                    <option value="199621147">199621147 - Money Magnet</option>
+                    <option value="51849617">51849617 - Financial Independence</option>
+                    <option value="9707411">9707411 - Business Success</option>
+                </select>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="saveCustomAffirmation()" style="flex: 1; background: linear-gradient(45deg, #a855f7, #9333ea); border: none; padding: 12px; border-radius: 8px; color: white; font-weight: bold;">Save</button>
+                <button onclick="closeAddAffirmationModal()" style="flex: 1; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); padding: 12px; border-radius: 8px; color: white;">Cancel</button>
             </div>
         </div>
     </div>
 
-    <button class="start-btn" onclick="startManifestation()">🚀 Begin Your Abundance Journey</button>
-</div>
+    <!-- Share Win Modal -->
+    <div id="shareWinModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 10000; justify-content: center; align-items: center;">
+        <div style="background: linear-gradient(135deg, #1a1a2e, #16213e); padding: 30px; border-radius: 20px; max-width: 400px; width: 90%; box-shadow: 0 20px 40px rgba(0,0,0,0.5);">
+            <h3 style="color: #00f5ff; margin-bottom: 20px; text-align: center;">📢 Share Your Manifestation Win</h3>
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 8px; font-size: 14px;">Amount Manifested:</label>
+                <input type="number" id="winAmount" placeholder="127.50" step="0.01" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); color: white;">
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 8px; font-size: 14px;">Grabovoi Code Used:</label>
+                <select id="winCode" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); color: white;">
+                    <option value="">Choose the code that helped...</option>
+                    <option value="5207418">5207418 - Unexpected Money</option>
+                    <option value="426499">426499 - Immediate Money</option>
+                    <option value="318612518714">318612518714 - Constant Flow</option>
+                    <option value="199621147">199621147 - Money Magnet</option>
+                    <option value="51849617">51849617 - Financial Independence</option>
+                    <option value="9707411">9707411 - Business Success</option>
+                </select>
+            </div>
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; font-size: 14px;">Brief Description (Optional):</label>
+                <textarea id="winDescription" placeholder="Received unexpected refund after focusing on the code..." style="width: 100%; height: 60px; padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); color: white; resize: vertical;"></textarea>
+            </div>
+            <div style="margin-bottom: 15px; font-size: 12px; opacity: 0.7; text-align: center;">
+                All submissions are anonymous and help inspire the community
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <button onclick="submitWin()" style="flex: 1; background: linear-gradient(45deg, #00f5ff, #0099ff); border: none; padding: 12px; border-radius: 8px; color: #0f0f23; font-weight: bold;">Share Win</button>
+                <button onclick="closeShareWinModal()" style="flex: 1; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); padding: 12px; border-radius: 8px; color: white;">Cancel</button>
+            </div>
+        </div>
+    </div>
 
-<div class="notification-demo" id="notificationDemo">
-    <div class="demo-title">💰 Money Manifestation</div>
-    <div class="demo-amount">You've received $<span id="demoAmount">247</span>!</div>
-</div>
-
-<script>
-    let selectedFrequency = 'daily';
-    let manifestationActive = false;
-
-    function enableNotifications() {
-        // Simulate notification permission
-        const btn = document.querySelector('.enable-btn');
-        btn.innerHTML = '✅ Notifications Enabled!';
-        btn.style.background = 'linear-gradient(45deg, #22c55e, #16a34a)';
-        btn.style.color = 'white';
+    <script>
+        let selectedFrequency = 'random'; // Random timing default
+        let manifestationActive = false;
+        let manifestationInterval = null;
+        let soundEnabled = true;
+        let volume = 50;
+        let includeGrabovai = false;
+        let lastGrabovaiDate = '';
+        let todaysGrabovaiIndex = 0;
+        let subliminalEnabled = false;
+        let subliminalInterval = null;
+        let spacedRepetitionEnabled = false;
+        let circadianOptimized = false;
+        let twentyOneDayCycle = false;
+        let focusCodeIndex = 0;
+        let cycleStartDate = null;
+        let codeShowCounts = {};
+        let nextShowTimes = {};
+        let selectedManifestationType = 'random';
         
-        // Show demo notification
-        setTimeout(() => {
-            showDemoNotification();
-        }, 1000);
-    }
+        // Freemium system
+        let isPro = localStorage.getItem('isPro') === 'true';
+        let dailyUsage = parseInt(localStorage.getItem('dailyUsage')) || 0;
+        let lastUsageDate = localStorage.getItem('lastUsageDate') || '';
+        const dailyLimit = 10;
+        
+        // Statistics
+        let totalManifested = parseFloat(localStorage.getItem('totalManifested')) || 0;
+        let sessionsCount = parseInt(localStorage.getItem('sessionsCount')) || 0;
+        
+        // Achievement tracking variables
+        let consecutiveDays = parseInt(localStorage.getItem('consecutiveDays')) || 0;
+        let totalCodeViews = parseInt(localStorage.getItem('totalCodeViews')) || 0;
+        let achievements = JSON.parse(localStorage.getItem('achievements')) || [];
+        let streakStartDate = localStorage.getItem('streakStartDate') || '';
+        
+        // Community features variables
+        let userId = localStorage.getItem('userId') || generateUserId();
+        let customAffirmations = JSON.parse(localStorage.getItem('customAffirmations')) || [];
+        let socialProofInterval;
+        
+        // Generate unique user ID
+        function generateUserId() {
+            const id = 'user_' + Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
+            localStorage.setItem('userId', id);
+            return id;
+        }
 
-    function selectFrequency(button, frequency) {
-        document.querySelectorAll('.frequency-btn').forEach(btn => {
-            btn.classList.remove('active');
+        const grabovaiCodes = [
+            { label: 'Unexpected Money', code: '5207418' },
+            { label: 'Immediate Money', code: '426499' },
+            { label: 'Constant Flow', code: '318612518714' },
+            { label: 'Money Magnet', code: '199621147' },
+            { label: 'Financial Independence', code: '51849617' },
+            { label: 'Business Success', code: '9707411' }
+        ];
+        
+        // Achievement badges system
+        const achievementBadges = [
+            { id: 'money_magnet', name: 'Money Magnet', description: 'Used codes for 3 consecutive days', daysRequired: 3, icon: '🧲' },
+            { id: 'abundance_warrior', name: 'Abundance Warrior', description: 'Used codes for 7 consecutive days', daysRequired: 7, icon: '⚔️' },
+            { id: 'wealth_creator', name: 'Wealth Creator', description: 'Used codes for 21 consecutive days', daysRequired: 21, icon: '👑' },
+            { id: 'manifestation_master', name: 'Manifestation Master', description: 'Used codes for 30 consecutive days', daysRequired: 30, icon: '🌟' },
+            { id: 'abundance_legend', name: 'Abundance Legend', description: 'Used codes for 100 consecutive days', daysRequired: 100, icon: '🏆' }
+        ];
+
+        const allBanks = [
+            'Chase Bank', 'Bank of America', 'Wells Fargo', 'Citibank', 'Capital One',
+            'US Bank', 'PNC Bank', 'TD Bank', 'Truist Bank', 'Charles Schwab',
+            'Goldman Sachs', 'American Express', 'Discover Bank', 'Ally Bank',
+            'Marcus by Goldman Sachs', 'PayPal', 'Venmo', 'Cash App', 'Zelle',
+            'Apple Pay', 'Google Pay', 'Coinbase', 'Robinhood', 'E*TRADE',
+            'Fidelity', 'Vanguard', 'Universe', 'Credit Union One', 'Navy Federal',
+            'USAA', 'SoFi', 'Chime', 'Current', 'Dave', 'MoneyLion', 'Acorns'
+        ];
+
+        const randomSenders = [
+            'Universe', 'Abundance Source', 'Wealth Generator', 'Money Magnet',
+            'Fortune Flow', 'Prosperity Portal', 'Golden Gateway', 'Success Stream',
+            'Manifest Hub', 'Wealth Wizard', 'Fortune Frequency', 'Money Miracle'
+        ];
+
+        const allManifestationTypes = [
+            { key: 'instant', text: '⚡ Instant Transfer' },
+            { key: 'investment', text: '📈 Investment Return' },
+            { key: 'cashback', text: '💰 Cashback Reward' },
+            { key: 'bonus', text: '🎁 Bonus Payment' }
+        ];
+
+        // Check if it's a new day
+        const today = new Date().toDateString();
+        if (lastUsageDate !== today) {
+            dailyUsage = 0;
+            localStorage.setItem('dailyUsage', '0');
+            localStorage.setItem('lastUsageDate', today);
+        }
+
+        // Initialize display
+        document.getElementById('totalManifested').textContent = '$' + totalManifested.toLocaleString();
+        document.getElementById('sessionsCount').textContent = sessionsCount;
+        
+        // Initialize UI based on plan
+        initializePlanUI();
+
+        function initializePlanUI() {
+            const planBadge = document.getElementById('planBadge');
+            const usageDisplay = document.getElementById('usageDisplay');
+            const upgradeBtn = document.getElementById('upgradeBtn');
+            const minAmountInput = document.getElementById('minAmount');
+            const maxAmountInput = document.getElementById('maxAmount');
+            const senderInput = document.getElementById('senderName');
+            
+            if (isPro) {
+                planBadge.textContent = 'PRO UNLIMITED';
+                planBadge.style.background = 'linear-gradient(45deg, #a855f7, #8b5cf6)';
+                planBadge.style.color = 'white';
+                usageDisplay.style.display = 'none';
+                upgradeBtn.style.display = 'none';
+                
+                // Pro users can set any amounts and sender names
+                maxAmountInput.max = '';
+                senderInput.disabled = false;
+                
+                // Enable Grabovoi codes for pro users
+                const grabovaiSection = document.querySelector('.grabovoi-section');
+                if (grabovaiSection) {
+                    grabovaiSection.style.opacity = '1';
+                    grabovaiSection.style.pointerEvents = 'auto';
+                }
+                
+                // Enable all random options for pro users
+                enableRandomOptionsForPro();
+            } else {
+                planBadge.textContent = 'FREE PLAN';
+                planBadge.style.background = 'rgba(160, 174, 192, 0.3)';
+                planBadge.style.color = '#a0aec0';
+                usageDisplay.style.display = 'block';
+                upgradeBtn.style.display = 'block';
+                
+                // Free users have limits
+                minAmountInput.max = '100';
+                maxAmountInput.max = '100';
+                maxAmountInput.value = Math.min(parseFloat(maxAmountInput.value), 100);
+                senderInput.value = 'Universe';
+                senderInput.disabled = true;
+                
+                // Disable Grabovoi codes for free users
+                const grabovaiSection = document.querySelector('.grabovoi-section');
+                if (grabovaiSection) {
+                    grabovaiSection.style.opacity = '0.5';
+                    grabovaiSection.style.pointerEvents = 'none';
+                }
+                
+                // Disable random options for free users
+                restrictRandomOptionsForFree();
+                
+                updateUsageDisplay();
+            }
+        }
+        
+        function updateUsageDisplay() {
+            if (!isPro) {
+                const usageFill = document.getElementById('usageFill');
+                const usageText = document.getElementById('usageText');
+                const percentage = (dailyUsage / dailyLimit) * 100;
+                
+                usageFill.style.width = percentage + '%';
+                usageText.textContent = `${dailyUsage} / ${dailyLimit} used today`;
+                
+                if (dailyUsage >= dailyLimit) {
+                    usageText.style.color = '#ef4444';
+                } else {
+                    usageText.style.color = 'rgba(255, 255, 255, 0.8)';
+                }
+            }
+        }
+
+        function selectFrequency(button, frequency) {
+            // Free users can only use 15 or 30 minute frequencies for fixed timing
+            if (!isPro && typeof frequency === 'number' && frequency < 900) {
+                showToast('Upgrade to Pro for faster frequencies!');
+                return;
+            }
+            
+            // Free users cannot use random timing
+            if (!isPro && frequency === 'random') {
+                showToast('Upgrade to Pro for random timing!');
+                return;
+            }
+            
+            document.querySelectorAll('.frequency-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            button.classList.add('active');
+            selectedFrequency = frequency;
+        }
+        
+        function toggleSenderInput() {
+            const senderSelect = document.getElementById('senderSelect');
+            const senderInput = document.getElementById('senderName');
+            
+            if (senderSelect.value === 'custom') {
+                senderInput.style.display = 'block';
+            } else {
+                senderInput.style.display = 'none';
+            }
+        }
+        
+        function selectManifestationType(button, type) {
+            // Free users cannot use random manifestation types
+            if (!isPro && type === 'random') {
+                showToast('Upgrade to Pro for random manifestation types!');
+                return;
+            }
+            
+            // Reset all manifestation type buttons
+            document.querySelectorAll('[onclick*="selectManifestationType"]').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            button.classList.add('active');
+            selectedManifestationType = type;
+        }
+        
+        function restrictRandomOptionsForFree() {
+            // Set default frequency to 15 minutes for free users
+            selectedFrequency = 900;
+            document.querySelector('[onclick*="900"]').classList.add('active');
+            document.querySelector('[onclick*="random"][onclick*="selectFrequency"]').classList.remove('active');
+            
+            // Set default manifestation type to instant for free users
+            selectedManifestationType = 'instant';
+            document.querySelector('#typeInstant').classList.add('active');
+            document.querySelector('#typeRandom').classList.remove('active');
+            
+            // Force bank selection to Universe for free users
+            document.getElementById('bankSelect').value = 'Universe';
+            
+            // Force sender to random mode (but limit to basic senders) for free users
+            document.getElementById('senderSelect').value = 'random';
+            document.getElementById('senderName').style.display = 'none';
+            
+            // Disable random bank option
+            const bankSelect = document.getElementById('bankSelect');
+            bankSelect.querySelector('[value="random"]').disabled = true;
+            bankSelect.querySelector('[value="random"]').textContent = '🎲 Random Selection (Pro Only)';
+            
+            // Disable random manifestation type
+            const typeRandom = document.getElementById('typeRandom');
+            typeRandom.style.opacity = '0.5';
+            typeRandom.style.pointerEvents = 'none';
+            typeRandom.innerHTML = '🎲 Random Type (Pro Only)';
+            
+            // Disable random frequency
+            const freqRandom = document.querySelector('[onclick*="random"][onclick*="selectFrequency"]');
+            freqRandom.style.opacity = '0.5';
+            freqRandom.style.pointerEvents = 'none';
+            freqRandom.innerHTML = '🎲 Random Timing (Pro Only)';
+            
+            // Disable advanced Grabovai features for free users
+            const advancedToggles = ['subliminalToggle', 'spacedRepetitionToggle', 'circadianToggle', 'cycleToggle'];
+            const proOnlyTexts = ['Subliminal Flash (Pro Only)', 'Spaced Learning (Pro Only)', 'Circadian (Pro Only)', '21-Day Cycle (Pro Only)'];
+            
+            advancedToggles.forEach((toggleId, index) => {
+                const toggle = document.getElementById(toggleId);
+                if (toggle) {
+                    toggle.style.opacity = '0.5';
+                    toggle.style.pointerEvents = 'none';
+                    toggle.textContent = proOnlyTexts[index];
+                }
+            });
+        }
+        
+        function enableRandomOptionsForPro() {
+            // Enable random bank option
+            const bankSelect = document.getElementById('bankSelect');
+            bankSelect.querySelector('[value="random"]').disabled = false;
+            bankSelect.querySelector('[value="random"]').textContent = '🎲 Random Selection';
+            
+            // Enable random manifestation type
+            const typeRandom = document.getElementById('typeRandom');
+            typeRandom.style.opacity = '1';
+            typeRandom.style.pointerEvents = 'auto';
+            typeRandom.innerHTML = '🎲 Random Type';
+            
+            // Enable random frequency
+            const freqRandom = document.querySelector('[onclick*="random"][onclick*="selectFrequency"]');
+            freqRandom.style.opacity = '1';
+            freqRandom.style.pointerEvents = 'auto';
+            freqRandom.innerHTML = '🎲 Random Timing';
+            
+            // Enable custom sender input
+            document.getElementById('senderName').disabled = false;
+            
+            // Update advanced Grabovai features for Pro users
+            updateAdvancedGrabovaiFeaturesForPro();
+        }
+
+        function toggleGrabovai() {
+            // Grabovoi codes are Pro only
+            if (!isPro) {
+                showToast('Upgrade to Pro for Grabovoi codes!');
+                return;
+            }
+            
+            const toggle = document.getElementById('grabovaiToggle');
+            const codes = document.getElementById('grabovaiCodes');
+            
+            includeGrabovai = !includeGrabovai;
+            
+            if (includeGrabovai) {
+                toggle.classList.add('active');
+                codes.classList.add('show');
+            } else {
+                toggle.classList.remove('active');
+                codes.classList.remove('show');
+            }
+        }
+
+        function copyCode(code) {
+            navigator.clipboard.writeText(code).then(() => {
+                showToast('Code copied: ' + code);
+                createSparkle(event.clientX, event.clientY);
+                // Track code interaction
+                if (isPro) trackCodeUsage();
+            }).catch(() => {
+                showToast('Code: ' + code);
+                // Track code interaction
+                if (isPro) trackCodeUsage();
+            });
+        }
+
+        function toggleSound() {
+            const btn = document.getElementById('soundToggle');
+            soundEnabled = !soundEnabled;
+            
+            if (soundEnabled) {
+                btn.textContent = 'Sound ON';
+                btn.classList.add('active');
+            } else {
+                btn.textContent = 'Sound OFF';
+                btn.classList.remove('active');
+            }
+        }
+
+        function testSound() {
+            if (soundEnabled) {
+                playManifestationSound();
+            }
+        }
+
+        function showToast(message) {
+            const existingToast = document.querySelector('.toast');
+            if (existingToast) {
+                existingToast.remove();
+            }
+
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.remove();
+                }
+            }, 2000);
+        }
+
+        function toggleManifestation() {
+            const btn = document.getElementById('mainButton');
+            
+            if (!manifestationActive) {
+                // Check daily limit for free users
+                if (!isPro && dailyUsage >= dailyLimit) {
+                    showToast('Daily limit reached! Upgrade to Pro for unlimited manifestations.');
+                    return;
+                }
+                
+                // Request notification permission
+                if ('Notification' in window) {
+                    Notification.requestPermission();
+                }
+                
+                manifestationActive = true;
+                btn.innerHTML = '⏸️ Pause DigiManifest';
+                btn.style.background = 'linear-gradient(45deg, #ef4444, #dc2626)';
+                
+                // Increment sessions count
+                sessionsCount++;
+                localStorage.setItem('sessionsCount', sessionsCount.toString());
+                document.getElementById('sessionsCount').textContent = sessionsCount;
+                
+                startManifestationCycle();
+            } else {
+                manifestationActive = false;
+                btn.innerHTML = '🚀 Start DigiManifest';
+                btn.style.background = 'linear-gradient(45deg, #00f5ff, #0099ff)';
+                
+                if (manifestationInterval) {
+                    clearTimeout(manifestationInterval);
+                }
+            }
+        }
+
+        function triggerManualNotification() {
+            // Check free user daily limit for manual triggers
+            if (!isPro && dailyUsage >= dailyLimit) {
+                showToast('Daily limit reached! Upgrade to Pro for unlimited manifestations.');
+                return;
+            }
+
+            // Request notification permission if needed
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
+
+            // Warn if approaching limit for free users
+            if (!isPro && dailyUsage >= dailyLimit - 1) {
+                showToast('This is your last free manifestation today!');
+            }
+
+            // Trigger immediate manifestation
+            showManifestationNotification();
+            showToast('✨ Manifestation triggered! Check your notification.');
+            
+            // Show Grabovai code after delay (if enabled and Pro)
+            if (isPro && includeGrabovai) {
+                setTimeout(() => {
+                    showGrabovaiNotification();
+                }, 8000); // 8 seconds after money notification for proper focus
+            }
+        }
+
+        function startManifestationCycle() {
+            // Show first money notification immediately
+            showManifestationNotification();
+            
+            // Show today's Grabovai code notification (if enabled and Pro)
+            if (isPro && includeGrabovai) {
+                setTimeout(() => {
+                    showGrabovaiNotification();
+                }, 8000); // 8 seconds after money notification for proper focus
+            }
+            
+            // Set up next notification
+            scheduleNextNotification();
+        }
+        
+        function scheduleNextNotification() {
+            if (!manifestationActive) return;
+            
+            let nextInterval;
+            
+            if (selectedFrequency === 'random') {
+                // Random timing between 2-20 minutes (for Pro) or 10-30 minutes (for Free)
+                const minTime = isPro ? 120 : 600; // 2 min or 10 min
+                const maxTime = isPro ? 1200 : 1800; // 20 min or 30 min
+                nextInterval = Math.floor(Math.random() * (maxTime - minTime + 1)) + minTime;
+            } else {
+                nextInterval = selectedFrequency;
+            }
+            
+            manifestationInterval = setTimeout(() => {
+                if (manifestationActive) {
+                    showManifestationNotification();
+                    scheduleNextNotification(); // Schedule the next one
+                }
+            }, nextInterval * 1000);
+        }
+
+        function showManifestationNotification() {
+            // Check daily limit for free users
+            if (!isPro && dailyUsage >= dailyLimit) {
+                manifestationActive = false;
+                document.getElementById('mainButton').innerHTML = '🚀 Start DigiManifest';
+                document.getElementById('mainButton').style.background = 'linear-gradient(45deg, #00f5ff, #0099ff)';
+                if (manifestationInterval) {
+                    clearTimeout(manifestationInterval);
+                }
+                showToast('Daily limit reached! Upgrade to Pro.');
+                return;
+            }
+            
+            const minAmount = parseFloat(document.getElementById('minAmount').value) || 10;
+            const maxAmount = parseFloat(document.getElementById('maxAmount').value) || 1000;
+            let senderName = document.getElementById('senderName').value || 'Universe';
+            let selectedBank = document.getElementById('bankSelect').value || 'Universe';
+            
+            // Handle random sender selection
+            const senderSelect = document.getElementById('senderSelect').value;
+            if (senderSelect === 'random') {
+                if (isPro) {
+                    senderName = randomSenders[Math.floor(Math.random() * randomSenders.length)];
+                } else {
+                    // Free users get limited sender options
+                    const freeSenders = ['Universe', 'Abundance Source', 'Wealth Generator'];
+                    senderName = freeSenders[Math.floor(Math.random() * freeSenders.length)];
+                }
+            }
+            
+            // Apply free user restrictions
+            const actualMaxAmount = isPro ? maxAmount : Math.min(maxAmount, 100);
+            const randomAmount = Math.floor(Math.random() * (actualMaxAmount - minAmount + 1)) + minAmount;
+            
+            // Handle random bank selection (Pro only)
+            if (selectedBank === 'random' && isPro) {
+                selectedBank = allBanks[Math.floor(Math.random() * allBanks.length)];
+            } else if (selectedBank === 'random' && !isPro) {
+                selectedBank = 'Universe'; // Fallback for free users
+            }
+            
+            // Handle random manifestation type selection (Pro only)
+            let manifestationTypeText;
+            if (selectedManifestationType === 'random' && isPro) {
+                const randomType = allManifestationTypes[Math.floor(Math.random() * allManifestationTypes.length)];
+                manifestationTypeText = randomType.text;
+            } else {
+                const typeMessages = {
+                    'instant': '⚡ Instant Transfer',
+                    'investment': '📈 Investment Return',
+                    'cashback': '💰 Cashback Reward',
+                    'bonus': '🎁 Bonus Payment'
+                };
+                manifestationTypeText = typeMessages[selectedManifestationType] || '⚡ Instant Transfer';
+            }
+            
+            // Grabovoi codes are now shown in separate notifications for better memorization
+            // This keeps money notifications focused only on manifestation amounts
+            
+            // Update usage for free users
+            if (!isPro) {
+                dailyUsage++;
+                localStorage.setItem('dailyUsage', dailyUsage.toString());
+                updateUsageDisplay();
+            }
+            
+            // Update demo notification
+            document.getElementById('demoAmount').textContent = randomAmount;
+            document.getElementById('demoSender').textContent = `${manifestationTypeText} from ${selectedBank}`;
+            
+            // Hide Grabovoi code from demo (now shown separately)
+            const codeDisplay = document.getElementById('demoCodeDisplay');
+            codeDisplay.style.display = 'none';
+            
+            const demo = document.getElementById('notificationDemo');
+            demo.classList.add('show');
+            
+            // Try to show browser notification (money only, no Grabovai codes)
+            if ('Notification' in window && Notification.permission === 'granted') {
+                const notificationBody = `$${randomAmount} • ${manifestationTypeText} from ${selectedBank}`;
+                
+                new Notification('💰 DigiManifest', {
+                    body: notificationBody,
+                    icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">💰</text></svg>',
+                    tag: 'digimanifest'
+                });
+            }
+            
+            // Update total
+            totalManifested += randomAmount;
+            document.getElementById('totalManifested').textContent = '$' + totalManifested.toLocaleString();
+            localStorage.setItem('totalManifested', totalManifested.toString());
+            
+            // Play sound
+            if (soundEnabled) {
+                playManifestationSound();
+            }
+            
+            setTimeout(() => {
+                demo.classList.remove('show');
+            }, 4000);
+        }
+
+        function playManifestationSound() {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const now = audioContext.currentTime;
+                const vol = volume / 100;
+                
+                // Create authentic cash register "ka-ching" sound
+                
+                // Quick "ka" attack - like a coin dropping
+                const coinOsc = audioContext.createOscillator();
+                const coinGain = audioContext.createGain();
+                coinOsc.connect(coinGain);
+                coinGain.connect(audioContext.destination);
+                
+                coinOsc.type = 'sawtooth';
+                coinOsc.frequency.setValueAtTime(1800, now);
+                coinOsc.frequency.exponentialRampToValueAtTime(400, now + 0.03);
+                
+                coinGain.gain.setValueAtTime(vol * 0.3, now);
+                coinGain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+                
+                coinOsc.start(now);
+                coinOsc.stop(now + 0.05);
+                
+                // Main "ching" bell sound - classic cash register bell
+                const bellOsc = audioContext.createOscillator();
+                const bellGain = audioContext.createGain();
+                bellOsc.connect(bellGain);
+                bellGain.connect(audioContext.destination);
+                
+                bellOsc.type = 'sine';
+                bellOsc.frequency.setValueAtTime(3136, now + 0.03); // High E note
+                
+                bellGain.gain.setValueAtTime(0, now + 0.03);
+                bellGain.gain.linearRampToValueAtTime(vol * 0.4, now + 0.05);
+                bellGain.gain.exponentialRampToValueAtTime(vol * 0.1, now + 0.3);
+                bellGain.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
+                
+                bellOsc.start(now + 0.03);
+                bellOsc.stop(now + 1.2);
+                
+                // Bell harmonic for richness
+                const harmonicOsc = audioContext.createOscillator();
+                const harmonicGain = audioContext.createGain();
+                harmonicOsc.connect(harmonicGain);
+                harmonicGain.connect(audioContext.destination);
+                
+                harmonicOsc.type = 'sine';
+                harmonicOsc.frequency.setValueAtTime(3136 * 2, now + 0.03); // Octave harmonic
+                
+                harmonicGain.gain.setValueAtTime(0, now + 0.03);
+                harmonicGain.gain.linearRampToValueAtTime(vol * 0.15, now + 0.05);
+                harmonicGain.gain.exponentialRampToValueAtTime(0.001, now + 0.8);
+                
+                harmonicOsc.start(now + 0.03);
+                harmonicOsc.stop(now + 0.8);
+                
+                // Add subtle vibrato to the bell for realism
+                const lfo = audioContext.createOscillator();
+                const lfoGain = audioContext.createGain();
+                lfo.connect(lfoGain);
+                lfoGain.connect(bellOsc.frequency);
+                
+                lfo.frequency.setValueAtTime(6, now + 0.03);
+                lfoGain.gain.setValueAtTime(8, now + 0.03);
+                
+                lfo.start(now + 0.03);
+                lfo.stop(now + 1.2);
+                
+            } catch (error) {
+                // Audio not supported or blocked
+            }
+        }
+
+        function createSparkle(x, y) {
+            const sparkle = document.createElement('div');
+            sparkle.innerHTML = '✨';
+            sparkle.style.cssText = `
+                position: fixed;
+                left: ${x}px;
+                top: ${y}px;
+                pointer-events: none;
+                font-size: 16px;
+                z-index: 9999;
+                animation: sparkleAnimation 1s ease-out forwards;
+            `;
+            
+            document.body.appendChild(sparkle);
+            
+            setTimeout(() => {
+                if (sparkle.parentNode) {
+                    sparkle.remove();
+                }
+            }, 1000);
+        }
+
+        // Volume control
+        document.getElementById('volumeSlider').addEventListener('input', function() {
+            volume = this.value;
         });
-        button.classList.add('active');
-        selectedFrequency = frequency;
-    }
 
-    function startManifestation() {
-        const btn = document.querySelector('.start-btn');
-        const minAmount = document.getElementById('minAmount').value || 1;
-        const maxAmount = document.getElementById('maxAmount').value || 1000;
-
-        if (!manifestationActive) {
-            manifestationActive = true;
-            btn.innerHTML = '⏸️ Pause Manifestation';
-            btn.style.background = 'linear-gradient(45deg, #ef4444, #dc2626)';
-            
-            // Start demo notifications
-            startDemoNotifications(minAmount, maxAmount);
-        } else {
-            manifestationActive = false;
-            btn.innerHTML = '🚀 Begin Your Abundance Journey';
-            btn.style.background = 'linear-gradient(45deg, #7c3aed, #a855f7)';
-            
-            clearInterval(window.manifestationInterval);
-        }
-    }
-
-    function showDemoNotification() {
-        const demo = document.getElementById('notificationDemo');
-        const minAmount = document.getElementById('minAmount').value || 1;
-        const maxAmount = document.getElementById('maxAmount').value || 1000;
-        const randomAmount = Math.floor(Math.random() * (maxAmount - minAmount + 1)) + parseInt(minAmount);
-        
-        document.getElementById('demoAmount').textContent = randomAmount;
-        demo.classList.add('show');
-        
-        setTimeout(() => {
-            demo.classList.remove('show');
-        }, 4000);
-    }
-
-    function startDemoNotifications(min, max) {
-        const getInterval = () => {
-            switch(selectedFrequency) {
-                case 'hourly': return 5000; // Demo: 5 seconds
-                case 'daily': return 10000; // Demo: 10 seconds
-                case 'weekly': return 20000; // Demo: 20 seconds
-                default: return 8000; // Demo: 8 seconds
-            }
-        };
-
-        window.manifestationInterval = setInterval(() => {
-            if (manifestationActive) {
-                showDemoNotification();
-            }
-        }, getInterval());
-    }
-
-    // Add some interactive sparkle effects
-    document.addEventListener('mousemove', (e) => {
-        if (Math.random() > 0.95) {
-            createSparkle(e.clientX, e.clientY);
-        }
-    });
-
-    function createSparkle(x, y) {
-        const sparkle = document.createElement('div');
-        sparkle.innerHTML = '✨';
-        sparkle.style.position = 'fixed';
-        sparkle.style.left = x + 'px';
-        sparkle.style.top = y + 'px';
-        sparkle.style.pointerEvents = 'none';
-        sparkle.style.fontSize = '12px';
-        sparkle.style.zIndex = '9999';
-        sparkle.style.animation = 'sparkleAnimation 1s ease-out forwards';
-        
+        // Add sparkle animation styles
         const style = document.createElement('style');
         style.textContent = `
             @keyframes sparkleAnimation {
@@ -438,16 +1670,832 @@
             }
         `;
         document.head.appendChild(style);
-        
-        document.body.appendChild(sparkle);
-        
-        setTimeout(() => {
-            document.body.removeChild(sparkle);
-            document.head.removeChild(style);
-        }, 1000);
-    }
-</script>
-```
 
+        function showUpgradeModal() {
+            const modal = document.getElementById('upgradeModal');
+            modal.style.display = 'flex';
+        }
+        
+        function closeUpgradeModal() {
+            const modal = document.getElementById('upgradeModal');
+            modal.style.display = 'none';
+        }
+        
+        function simulateUpgrade() {
+            // Simulate upgrade process
+            isPro = true;
+            localStorage.setItem('isPro', 'true');
+            
+            // Reset daily usage
+            dailyUsage = 0;
+            localStorage.setItem('dailyUsage', '0');
+            
+            // Update UI
+            initializePlanUI();
+            closeUpgradeModal();
+            
+            showToast('Welcome to DigiManifest Pro! 🎉');
+            
+            // Show some sparkles
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    createSparkle(
+                        Math.random() * window.innerWidth,
+                        Math.random() * window.innerHeight
+                    );
+                }, i * 100);
+            }
+        }
+
+        // Get today's Grabovoi code with advanced learning algorithms
+        function getTodaysGrabovaiCode() {
+            // Priority order: 21-day cycle > spaced repetition > daily rotation
+            if (twentyOneDayCycle && cycleStartDate) {
+                return get21DayCycleCode();
+            }
+            
+            if (spacedRepetitionEnabled) {
+                const spacedCode = getSpacedRepetitionCode();
+                if (spacedCode) return spacedCode;
+            }
+            
+            // Fallback to daily rotation
+            const today = new Date().toDateString();
+            
+            // Check if we need to update today's code
+            if (lastGrabovaiDate !== today) {
+                lastGrabovaiDate = today;
+                // Use date as seed for consistent daily rotation
+                const dateHash = today.split('').reduce((a, b) => {
+                    a = ((a << 5) - a) + b.charCodeAt(0);
+                    return a & a;
+                }, 0);
+                todaysGrabovaiIndex = Math.abs(dateHash) % grabovaiCodes.length;
+                
+                // Save to localStorage
+                localStorage.setItem('lastGrabovaiDate', lastGrabovaiDate);
+                localStorage.setItem('todaysGrabovaiIndex', todaysGrabovaiIndex.toString());
+            }
+            
+            return grabovaiCodes[todaysGrabovaiIndex];
+        }
+
+        // Show separate Grabovoi notification (longer duration for memorization)
+        function showGrabovaiNotification() {
+            if (!isPro || !includeGrabovai) return;
+            
+            const todaysCode = getTodaysGrabovaiCode();
+            
+            if ('Notification' in window && Notification.permission === 'granted') {
+                const notification = new Notification('🔢 Today\'s Grabovoi Code', {
+                    body: `${todaysCode.code}\n${todaysCode.purpose}\n\nFocus on this number to absorb its energy`,
+                    icon: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiByeD0iMTIiIGZpbGw9IiNhODU1ZjciLz4KPHRleHQgeD0iMzIiIHk9IjQwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMjQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7wn5KiPC90ZXh0Pgo8L3N2Zz4K',
+                    requireInteraction: true, // Keeps notification visible longer
+                    tag: 'grabovai-code'
+                });
+                
+                // Auto-dismiss after 10 seconds (longer than regular notifications)
+                setTimeout(() => {
+                    notification.close();
+                }, 10000);
+            } else {
+                // Fallback visual notification
+                showVisualGrabovaiNotification(todaysCode);
+            }
+            
+            // Track code usage for achievements
+            trackCodeUsage();
+        }
+
+        // Manual trigger for today's Grabovai code
+        function showTodaysGrabovaiCode() {
+            if (!isPro) {
+                showToast('Upgrade to Pro for Grabovai codes!');
+                return;
+            }
+            
+            const todaysCode = getTodaysGrabovaiCode();
+            showVisualGrabovaiNotification(todaysCode);
+            showToast(`Today's code: ${todaysCode.code} (${todaysCode.purpose})`);
+            
+            // Track code usage for consecutive days
+            trackCodeUsage();
+        }
+        
+        // Achievement tracking system
+        function trackCodeUsage() {
+            const today = new Date().toDateString();
+            const yesterday = new Date(Date.now() - 86400000).toDateString();
+            
+            // Check if user used codes yesterday to maintain streak
+            if (lastUsageDate === yesterday || lastUsageDate === today) {
+                if (lastUsageDate !== today) {
+                    consecutiveDays++;
+                    if (!streakStartDate) {
+                        streakStartDate = today;
+                    }
+                }
+            } else if (lastUsageDate !== today) {
+                // Streak broken, reset
+                consecutiveDays = 1;
+                streakStartDate = today;
+            }
+            
+            // Update last usage date
+            lastUsageDate = today;
+            totalCodeViews++;
+            
+            // Save to localStorage
+            localStorage.setItem('consecutiveDays', consecutiveDays.toString());
+            localStorage.setItem('lastUsageDate', lastUsageDate);
+            localStorage.setItem('totalCodeViews', totalCodeViews.toString());
+            localStorage.setItem('streakStartDate', streakStartDate);
+            
+            // Check for new achievements
+            checkForNewAchievements();
+            
+            // Update achievement display
+            updateAchievementDisplay();
+        }
+        
+        function checkForNewAchievements() {
+            achievementBadges.forEach(badge => {
+                if (consecutiveDays >= badge.daysRequired && !achievements.includes(badge.id)) {
+                    // New achievement unlocked!
+                    achievements.push(badge.id);
+                    localStorage.setItem('achievements', JSON.stringify(achievements));
+                    showAchievementUnlocked(badge);
+                }
+            });
+        }
+        
+        function showAchievementUnlocked(badge) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(135deg, #ffd700, #ffed4e);
+                color: #1a1a1a;
+                padding: 30px;
+                border-radius: 20px;
+                box-shadow: 0 20px 40px rgba(255, 215, 0, 0.4);
+                z-index: 10001;
+                text-align: center;
+                font-weight: bold;
+                animation: achievementPop 0.6s ease-out;
+                min-width: 300px;
+            `;
+            
+            notification.innerHTML = `
+                <div style="font-size: 48px; margin-bottom: 10px;">${badge.icon}</div>
+                <div style="font-size: 18px; margin-bottom: 8px;">Achievement Unlocked!</div>
+                <div style="font-size: 16px; font-weight: bold; margin-bottom: 5px;">${badge.name}</div>
+                <div style="font-size: 14px; opacity: 0.8;">${badge.description}</div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Add achievement animation CSS if not exists
+            if (!document.getElementById('achievementCSS')) {
+                const style = document.createElement('style');
+                style.id = 'achievementCSS';
+                style.textContent = `
+                    @keyframes achievementPop {
+                        0% { transform: translate(-50%, -50%) scale(0.5) rotate(-10deg); opacity: 0; }
+                        50% { transform: translate(-50%, -50%) scale(1.1) rotate(5deg); opacity: 1; }
+                        100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            // Auto-dismiss after 4 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 4000);
+            
+            // Show sparkle effects
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    createSparkle(
+                        Math.random() * window.innerWidth,
+                        Math.random() * window.innerHeight
+                    );
+                }, i * 50);
+            }
+        }
+        
+        function updateAchievementDisplay() {
+            const display = document.getElementById('achievementDisplay');
+            if (!display) return;
+            
+            const earnedBadges = achievements.map(id => 
+                achievementBadges.find(badge => badge.id === id)
+            ).filter(Boolean);
+            
+            display.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                    <span style="font-size: 16px; font-weight: bold;">🏆 ${consecutiveDays} Day Streak</span>
+                    ${earnedBadges.map(badge => `<span style="font-size: 20px;" title="${badge.name}: ${badge.description}">${badge.icon}</span>`).join('')}
+                </div>
+                <div style="font-size: 12px; opacity: 0.7;">
+                    Total Code Views: ${totalCodeViews} | 
+                    ${earnedBadges.length}/${achievementBadges.length} Achievements
+                </div>
+            `;
+        }
+
+        // Subliminal flash functions with advanced learning
+        function showSubliminalFlash() {
+            if (!isPro || !subliminalEnabled) return;
+            
+            // Use advanced learning algorithms for subliminal flashes too
+            let selectedCode;
+            if (twentyOneDayCycle && cycleStartDate) {
+                selectedCode = get21DayCycleCode();
+            } else if (spacedRepetitionEnabled) {
+                const spacedCode = getSpacedRepetitionCode();
+                selectedCode = spacedCode || grabovaiCodes[Math.floor(Math.random() * grabovaiCodes.length)];
+            } else {
+                selectedCode = grabovaiCodes[Math.floor(Math.random() * grabovaiCodes.length)];
+            }
+            
+            const flashElement = document.getElementById('subliminalFlash');
+            
+            flashElement.textContent = selectedCode.code;
+            flashElement.classList.add('show');
+            
+            // Flash duration: 17-33ms (subliminal threshold)
+            const flashDuration = Math.random() * 16 + 17; // 17-33ms
+            
+            setTimeout(() => {
+                flashElement.classList.remove('show');
+            }, flashDuration);
+        }
+
+        function startSubliminalFlashes() {
+            if (subliminalInterval) clearInterval(subliminalInterval);
+            
+            // Random intervals between 30-120 seconds for subliminal flashes
+            const scheduleNextFlash = () => {
+                const nextInterval = (Math.random() * 90 + 30) * 1000; // 30-120 seconds
+                subliminalInterval = setTimeout(() => {
+                    showSubliminalFlash();
+                    if (subliminalEnabled) scheduleNextFlash();
+                }, nextInterval);
+            };
+            
+            scheduleNextFlash();
+        }
+
+        function stopSubliminalFlashes() {
+            if (subliminalInterval) {
+                clearTimeout(subliminalInterval);
+                subliminalInterval = null;
+            }
+        }
+
+        function toggleSubliminal() {
+            if (!isPro) {
+                showToast('Upgrade to Pro for subliminal features!');
+                return;
+            }
+            
+            subliminalEnabled = !subliminalEnabled;
+            const btn = document.getElementById('subliminalToggle');
+            
+            if (subliminalEnabled) {
+                btn.textContent = 'Subliminal Flash ON';
+                btn.classList.add('active');
+                startSubliminalFlashes();
+                showToast('Subliminal code flashes activated');
+            } else {
+                btn.textContent = 'Subliminal Flash OFF';
+                btn.classList.remove('active');
+                stopSubliminalFlashes();
+                showToast('Subliminal code flashes deactivated');
+            }
+            
+            // Save preference
+            localStorage.setItem('subliminalEnabled', subliminalEnabled.toString());
+        }
+
+        function updateAdvancedGrabovaiFeaturesForPro() {
+            if (!isPro) return;
+            
+            const features = [
+                { id: 'subliminalToggle', enabled: subliminalEnabled, onText: 'Subliminal Flash ON', offText: 'Subliminal Flash OFF', action: startSubliminalFlashes },
+                { id: 'spacedRepetitionToggle', enabled: spacedRepetitionEnabled, onText: 'Spaced Learning ON', offText: 'Spaced Learning OFF', action: initializeSpacedRepetition },
+                { id: 'circadianToggle', enabled: circadianOptimized, onText: 'Circadian ON', offText: 'Circadian OFF', action: scheduleCircadianNotifications },
+                { id: 'cycleToggle', enabled: twentyOneDayCycle, onText: '21-Day Cycle ON', offText: '21-Day Cycle OFF', action: null }
+            ];
+            
+            features.forEach(feature => {
+                const btn = document.getElementById(feature.id);
+                if (btn) {
+                    btn.style.opacity = '1';
+                    btn.style.pointerEvents = 'auto';
+                    
+                    if (feature.enabled) {
+                        btn.textContent = feature.onText;
+                        btn.classList.add('active');
+                        if (feature.action) feature.action();
+                    } else {
+                        btn.textContent = feature.offText;
+                        btn.classList.remove('active');
+                    }
+                }
+            });
+        }
+
+        // Spaced Repetition System
+        function toggleSpacedRepetition() {
+            if (!isPro) {
+                showToast('Upgrade to Pro for spaced repetition!');
+                return;
+            }
+            
+            spacedRepetitionEnabled = !spacedRepetitionEnabled;
+            const btn = document.getElementById('spacedRepetitionToggle');
+            
+            if (spacedRepetitionEnabled) {
+                btn.textContent = 'Spaced Learning ON';
+                btn.classList.add('active');
+                initializeSpacedRepetition();
+                showToast('Spaced repetition learning activated');
+            } else {
+                btn.textContent = 'Spaced Learning OFF';
+                btn.classList.remove('active');
+                showToast('Spaced repetition learning deactivated');
+            }
+            
+            localStorage.setItem('spacedRepetitionEnabled', spacedRepetitionEnabled.toString());
+        }
+
+        function initializeSpacedRepetition() {
+            // Load or initialize tracking data
+            codeShowCounts = JSON.parse(localStorage.getItem('codeShowCounts')) || {};
+            nextShowTimes = JSON.parse(localStorage.getItem('nextShowTimes')) || {};
+            
+            // Initialize counts for all codes
+            grabovaiCodes.forEach((code, index) => {
+                if (!codeShowCounts[index]) codeShowCounts[index] = 0;
+            });
+        }
+
+        function getSpacedRepetitionCode() {
+            const now = Date.now();
+            
+            // Find codes ready to be shown based on spaced intervals
+            const readyCodes = [];
+            
+            grabovaiCodes.forEach((code, index) => {
+                const showCount = codeShowCounts[index] || 0;
+                const nextShowTime = nextShowTimes[index] || 0;
+                
+                if (now >= nextShowTime) {
+                    readyCodes.push({ index, showCount, code });
+                }
+            });
+            
+            if (readyCodes.length === 0) return null;
+            
+            // Prioritize codes with fewer shows
+            readyCodes.sort((a, b) => a.showCount - b.showCount);
+            const selectedCode = readyCodes[0];
+            
+            // Update show count and next show time using spaced intervals
+            codeShowCounts[selectedCode.index]++;
+            const intervals = [1, 3, 7, 14, 30, 60]; // minutes
+            const intervalIndex = Math.min(selectedCode.showCount, intervals.length - 1);
+            const nextInterval = intervals[intervalIndex] * 60 * 1000; // convert to ms
+            
+            nextShowTimes[selectedCode.index] = now + nextInterval;
+            
+            // Save progress
+            localStorage.setItem('codeShowCounts', JSON.stringify(codeShowCounts));
+            localStorage.setItem('nextShowTimes', JSON.stringify(nextShowTimes));
+            
+            return selectedCode.code;
+        }
+
+        // Circadian Optimization
+        function toggleCircadian() {
+            if (!isPro) {
+                showToast('Upgrade to Pro for circadian optimization!');
+                return;
+            }
+            
+            circadianOptimized = !circadianOptimized;
+            const btn = document.getElementById('circadianToggle');
+            
+            if (circadianOptimized) {
+                btn.textContent = 'Circadian ON';
+                btn.classList.add('active');
+                scheduleCircadianNotifications();
+                showToast('Circadian rhythm optimization activated');
+            } else {
+                btn.textContent = 'Circadian OFF';
+                btn.classList.remove('active');
+                showToast('Circadian rhythm optimization deactivated');
+            }
+            
+            localStorage.setItem('circadianOptimized', circadianOptimized.toString());
+        }
+
+        function isOptimalCircadianTime() {
+            const hour = new Date().getHours();
+            // Theta brainwave states: 6-8 AM (upon waking) and 10 PM-12 AM (before sleep)
+            return (hour >= 6 && hour <= 8) || (hour >= 22);
+        }
+
+        function scheduleCircadianNotifications() {
+            if (!circadianOptimized) return;
+            
+            const now = new Date();
+            const currentHour = now.getHours();
+            
+            let nextOptimalTime;
+            if (currentHour < 6) {
+                // Schedule for morning
+                nextOptimalTime = new Date(now);
+                nextOptimalTime.setHours(6, 30, 0, 0);
+            } else if (currentHour >= 6 && currentHour < 22) {
+                // Schedule for evening
+                nextOptimalTime = new Date(now);
+                nextOptimalTime.setHours(22, 30, 0, 0);
+            } else {
+                // Schedule for next morning
+                nextOptimalTime = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+                nextOptimalTime.setHours(6, 30, 0, 0);
+            }
+            
+            const timeUntilOptimal = nextOptimalTime.getTime() - now.getTime();
+            
+            setTimeout(() => {
+                if (circadianOptimized && isPro && includeGrabovai) {
+                    showGrabovaiNotification();
+                    scheduleCircadianNotifications(); // Schedule next one
+                }
+            }, timeUntilOptimal);
+        }
+
+        // 21-Day Cycle System
+        function toggle21DayCycle() {
+            if (!isPro) {
+                showToast('Upgrade to Pro for 21-day cycles!');
+                return;
+            }
+            
+            twentyOneDayCycle = !twentyOneDayCycle;
+            const btn = document.getElementById('cycleToggle');
+            
+            if (twentyOneDayCycle) {
+                btn.textContent = '21-Day Cycle ON';
+                btn.classList.add('active');
+                start21DayCycle();
+                showToast('21-day focus cycle started');
+            } else {
+                btn.textContent = '21-Day Cycle OFF';
+                btn.classList.remove('active');
+                showToast('21-day focus cycle stopped');
+            }
+            
+            localStorage.setItem('twentyOneDayCycle', twentyOneDayCycle.toString());
+        }
+
+        function start21DayCycle() {
+            if (!cycleStartDate) {
+                cycleStartDate = new Date().toDateString();
+                focusCodeIndex = Math.floor(Math.random() * grabovaiCodes.length);
+                localStorage.setItem('cycleStartDate', cycleStartDate);
+                localStorage.setItem('focusCodeIndex', focusCodeIndex.toString());
+            }
+        }
+
+        function get21DayCycleCode() {
+            const startDate = new Date(cycleStartDate);
+            const today = new Date();
+            const daysDiff = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+            
+            if (daysDiff >= 21) {
+                // Start new cycle
+                cycleStartDate = today.toDateString();
+                focusCodeIndex = Math.floor(Math.random() * grabovaiCodes.length);
+                localStorage.setItem('cycleStartDate', cycleStartDate);
+                localStorage.setItem('focusCodeIndex', focusCodeIndex.toString());
+            }
+            
+            return grabovaiCodes[focusCodeIndex];
+        }
+
+        // Visual fallback for Grabovai notifications
+        function showVisualGrabovaiNotification(codeData) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #a855f7, #9333ea);
+                color: white;
+                padding: 20px;
+                border-radius: 12px;
+                box-shadow: 0 8px 25px rgba(168, 85, 247, 0.4);
+                z-index: 10000;
+                max-width: 300px;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                backdrop-filter: blur(10px);
+            `;
+            
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                    <span style="font-size: 18px; margin-right: 8px;">🔢</span>
+                    <strong>Today's Grabovai Code</strong>
+                </div>
+                <div style="font-size: 24px; font-weight: bold; margin: 10px 0; text-align: center; font-family: 'Courier New', monospace; background: rgba(255,255,255,0.1); padding: 8px; border-radius: 6px;">
+                    ${codeData.code}
+                </div>
+                <div style="font-size: 14px; text-align: center; opacity: 0.9;">
+                    ${codeData.purpose}
+                </div>
+                <div style="font-size: 12px; text-align: center; margin-top: 8px; opacity: 0.7;">
+                    Focus on this number to absorb its energy
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Auto-dismiss after 10 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 10000);
+        }
+
+        // Initialize Grabovai data on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load saved Grabovai rotation data
+            lastGrabovaiDate = localStorage.getItem('lastGrabovaiDate') || '';
+            todaysGrabovaiIndex = parseInt(localStorage.getItem('todaysGrabovaiIndex')) || 0;
+            
+            // Load advanced feature preferences
+            subliminalEnabled = localStorage.getItem('subliminalEnabled') === 'true';
+            spacedRepetitionEnabled = localStorage.getItem('spacedRepetitionEnabled') === 'true';
+            circadianOptimized = localStorage.getItem('circadianOptimized') === 'true';
+            twentyOneDayCycle = localStorage.getItem('twentyOneDayCycle') === 'true';
+            
+            // Load 21-day cycle data
+            cycleStartDate = localStorage.getItem('cycleStartDate');
+            focusCodeIndex = parseInt(localStorage.getItem('focusCodeIndex')) || 0;
+            
+            // Initialize spaced repetition data
+            if (spacedRepetitionEnabled) {
+                initializeSpacedRepetition();
+            }
+            
+            // Update UI for Pro users
+            if (isPro) {
+                updateAdvancedGrabovaiFeaturesForPro();
+            }
+            
+            // Initialize achievement display
+            updateAchievementDisplay();
+            
+            // Initialize custom affirmations
+            loadCustomAffirmations();
+            
+            // Initialize social proof
+            startSocialProofUpdates();
+            trackUserSession();
+        });
+
+        // Add sparkles on mouse movement
+        document.addEventListener('mousemove', (e) => {
+            if (Math.random() > 0.98) {
+                createSparkle(e.clientX, e.clientY);
+            }
+        });
+        
+        // Custom Affirmations Functions
+        function showAddAffirmationModal() {
+            document.getElementById('addAffirmationModal').style.display = 'flex';
+        }
+        
+        function closeAddAffirmationModal() {
+            document.getElementById('addAffirmationModal').style.display = 'none';
+            document.getElementById('newAffirmationText').value = '';
+            document.getElementById('newAffirmationCode').value = '';
+        }
+        
+        function saveCustomAffirmation() {
+            const text = document.getElementById('newAffirmationText').value.trim();
+            const code = document.getElementById('newAffirmationCode').value;
+            
+            if (!text) {
+                showToast('Please enter an affirmation');
+                return;
+            }
+            
+            const affirmation = {
+                id: Date.now(),
+                text: text,
+                grabovaiCode: code,
+                createdAt: new Date().toISOString()
+            };
+            
+            customAffirmations.push(affirmation);
+            localStorage.setItem('customAffirmations', JSON.stringify(customAffirmations));
+            
+            // Save to database if Pro
+            if (isPro) {
+                saveAffirmationToDatabase(affirmation);
+            }
+            
+            loadCustomAffirmations();
+            closeAddAffirmationModal();
+            showToast('Affirmation saved! 💫');
+        }
+        
+        async function saveAffirmationToDatabase(affirmation) {
+            try {
+                await fetch('http://localhost:3001/api/affirmations', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        userId: userId,
+                        affirmation: affirmation.text,
+                        grabovaiCode: affirmation.grabovaiCode
+                    })
+                });
+            } catch (error) {
+                console.log('Database save failed, using local storage');
+            }
+        }
+        
+        function loadCustomAffirmations() {
+            const container = document.getElementById('customAffirmationsList');
+            
+            if (customAffirmations.length === 0) {
+                container.innerHTML = `
+                    <div style="font-size: 12px; opacity: 0.7; text-align: center; padding: 10px;">
+                        Add personal wealth affirmations paired with Grabovoi codes
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = customAffirmations.map(affirmation => `
+                <div style="background: rgba(255,255,255,0.05); padding: 8px; border-radius: 6px; margin-bottom: 6px; position: relative;">
+                    <div style="font-size: 12px; margin-bottom: 4px; line-height: 1.3;">${affirmation.text}</div>
+                    ${affirmation.grabovaiCode ? `<div style="font-size: 10px; color: #a855f7; font-family: monospace;">Code: ${affirmation.grabovaiCode}</div>` : ''}
+                    <button onclick="removeAffirmation(${affirmation.id})" style="position: absolute; top: 4px; right: 4px; background: none; border: none; color: rgba(255,255,255,0.5); cursor: pointer; font-size: 12px;">×</button>
+                </div>
+            `).join('');
+        }
+        
+        function removeAffirmation(id) {
+            customAffirmations = customAffirmations.filter(a => a.id !== id);
+            localStorage.setItem('customAffirmations', JSON.stringify(customAffirmations));
+            loadCustomAffirmations();
+            showToast('Affirmation removed');
+        }
+        
+        // Social Proof Functions
+        async function trackUserSession() {
+            try {
+                await fetch('http://localhost:3001/api/track-session', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+            } catch (error) {
+                console.log('Session tracking failed');
+            }
+        }
+        
+        function startSocialProofUpdates() {
+            updateActiveUsers();
+            updateSuccessStory();
+            
+            // Update every 30 seconds
+            socialProofInterval = setInterval(() => {
+                updateActiveUsers();
+                if (Math.random() < 0.3) { // 30% chance to update success story
+                    updateSuccessStory();
+                }
+            }, 30000);
+        }
+        
+        async function updateActiveUsers() {
+            try {
+                const response = await fetch('http://localhost:3001/api/active-users');
+                const data = await response.json();
+                
+                document.getElementById('activeUsers').innerHTML = 
+                    `🟢 ${data.count.toLocaleString()} people currently manifesting`;
+            } catch (error) {
+                document.getElementById('activeUsers').innerHTML = 
+                    `🟢 ${Math.floor(Math.random() * 500) + 2000} people currently manifesting`;
+            }
+        }
+        
+        async function updateSuccessStory() {
+            try {
+                const response = await fetch('http://localhost:3001/api/success-story');
+                const data = await response.json();
+                
+                document.getElementById('successStory').innerHTML = 
+                    `💰 Someone just manifested $${data.amount} with code ${data.grabovai_code}`;
+            } catch (error) {
+                // Fallback success stories
+                const fallbackStories = [
+                    { amount: '125.00', code: '5207418' },
+                    { amount: '250.00', code: '426499' },
+                    { amount: '75.50', code: '318612518714' },
+                    { amount: '500.00', code: '199621147' }
+                ];
+                const story = fallbackStories[Math.floor(Math.random() * fallbackStories.length)];
+                document.getElementById('successStory').innerHTML = 
+                    `💰 Someone just manifested $${story.amount} with code ${story.code}`;
+            }
+        }
+        
+        function showShareWinModal() {
+            document.getElementById('shareWinModal').style.display = 'flex';
+        }
+        
+        function closeShareWinModal() {
+            document.getElementById('shareWinModal').style.display = 'none';
+            document.getElementById('winAmount').value = '';
+            document.getElementById('winCode').value = '';
+            document.getElementById('winDescription').value = '';
+        }
+        
+        async function submitWin() {
+            const amount = parseFloat(document.getElementById('winAmount').value);
+            const code = document.getElementById('winCode').value;
+            const description = document.getElementById('winDescription').value.trim();
+            
+            if (!amount || amount <= 0) {
+                showToast('Please enter a valid amount');
+                return;
+            }
+            
+            try {
+                await fetch('http://localhost:3001/api/manifestation-win', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        amount: amount,
+                        grabovaiCode: code,
+                        description: description
+                    })
+                });
+                
+                showToast('Win shared with community! 🎉');
+                closeShareWinModal();
+                
+                // Update success story immediately
+                setTimeout(updateSuccessStory, 2000);
+            } catch (error) {
+                showToast('Submission failed, try again later');
+            }
+        }
+        
+        // Theme Toggle Functions
+        let currentTheme = localStorage.getItem('theme') || 'dark';
+        
+        function toggleTheme() {
+            currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            localStorage.setItem('theme', currentTheme);
+            applyTheme();
+        }
+        
+        function applyTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('themeIcon');
+            const themeText = document.getElementById('themeText');
+            
+            if (currentTheme === 'light') {
+                body.classList.add('light-theme');
+                themeIcon.textContent = '☀️';
+                themeText.textContent = 'Light';
+            } else {
+                body.classList.remove('light-theme');
+                themeIcon.textContent = '🌙';
+                themeText.textContent = 'Dark';
+            }
+        }
+        
+        // Initialize theme on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            applyTheme();
+        });
+    </script>
 </body>
 </html>
