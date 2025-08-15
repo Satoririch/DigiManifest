@@ -1,0 +1,131 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: #e2e8f0;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.code-font {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.glass-card {
+  background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.quantum-gradient {
+  background: linear-gradient(135deg, #06b6d4 0%, #8b5cf6 50%, #f59e0b 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.holographic-border {
+  position: relative;
+}
+
+.holographic-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, #06b6d480, #8b5cf680, #f59e0b80);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.gradient-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.gradient-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, #06b6d4 0%, #8b5cf6 50%, #f59e0b 100%);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.floating {
+  animation: float 6s ease-in-out infinite;
+}
+
+.notification-card {
+  transition: all 0.3s ease;
+  transform-origin: top;
+}
+
+.notification-card:hover {
+  transform: scale(1.03);
+}
+
+.progress-ring {
+  transition: stroke-dashoffset 0.5s;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(6, 182, 212, 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(6, 182, 212, 0.7);
+}
+
+/* Custom button hover effects */
+.btn-glow:hover {
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.5);
+  transform: translateY(-2px);
+}
+
+.btn-gradient {
+  background: linear-gradient(45deg, #06b6d4, #8b5cf6);
+}
+
+.btn-gradient:hover {
+  background: linear-gradient(45deg, #0891b2, #7c3aed);
+}
+
+/* Toast positioning */
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+}
