@@ -2,26 +2,26 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import { 
-  Infinity, 
-  Brain, 
-  Atom, 
-  DollarSign, 
-  Bell, 
-  SquareRoot, 
-  Zap, 
-  Clock, 
-  Users, 
-  TrendingUp,
-  Menu,
-  X,
-  Play,
-  Pause,
-  Settings,
-  Crown,
-  Star,
-  LogIn,
-  UserPlus
-} from 'lucide-react';
+  FaInfinity as Infinity,
+  FaBrain as Brain,
+  FaAtom as Atom,
+  FaDollarSign as DollarSign,
+  FaBell as Bell,
+  FaSquareRootAlt as SquareRoot,
+  FaBolt as Zap,
+  FaClock as Clock,
+  FaUsers as Users,
+  FaChartLine as TrendingUp,
+  FaBars as Menu,
+  FaTimes as X,
+  FaPlay as Play,
+  FaPause as Pause,
+  FaCog as Settings,
+  FaCrown as Crown,
+  FaStar as Star,
+  FaSignInAlt as LogIn,
+  FaUserPlus as UserPlus
+} from 'react-icons/fa';
 import './App.css';
 
 // API Service
